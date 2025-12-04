@@ -25,7 +25,16 @@ export const getPremiumTooltip = (params: any, title?: string) => {
     const value = item.value;
     const name =
       item.percent !== undefined ? item.name : item.seriesName || item.name;
-    const color = item.color;
+    let color = item.color;
+    if (
+      typeof color === "object" &&
+      color.colorStops &&
+      color.colorStops.length > 0
+    ) {
+      color = color.colorStops[0].color;
+    } else if (typeof color === "object" && color.type === "linear") {
+      color = color.colorStops?.[0]?.color || "var(--color-primary)";
+    }
     const percent = item.percent;
 
     const percentHtml =

@@ -315,10 +315,11 @@
             :page-size="6"
           >
             <template #default="{ paginatedItems }">
-              <div class="space-y-2">
+              <div class="space-y-3">
                 <DashboardListItem
                   v-for="(item, idx) in paginatedItems"
                   :key="idx"
+                  class="min-h-[60px]"
                 >
                   <template #leading>
                     <div class="flex items-center gap-2">
@@ -536,7 +537,7 @@ const initCharts = () => {
       yAxis: { type: "value", splitLine: { lineStyle: { color: "#334155" } } },
       series: [
         {
-          name: "Meta Diária",
+          name: "Meta Diária: ",
           data: chartData.value.metaDiaria.values,
           type: "bar",
           itemStyle: { color: "#0099ff" },
