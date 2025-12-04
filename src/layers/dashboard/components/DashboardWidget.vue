@@ -42,7 +42,9 @@
       </div>
     </div>
 
-    <div class="px-6 py-2 relative flex-1 flex flex-col overflow-y-auto overflow-x-hidden custom-scrollbar">
+    <div
+      class="px-6 py-2 relative flex-1 flex flex-col overflow-y-auto overflow-x-hidden custom-scrollbar"
+    >
       <slot :paginatedItems="paginatedItems" />
     </div>
 

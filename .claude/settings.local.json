@@ -19,7 +19,8 @@
       "Bash(if exist node_modules.vite rmdir /s /q node_modules.vite)",
       "Bash(if exist node_modules.cache rmdir /s /q node_modules.cache)",
       "Bash(if exist \"C:\\Users\\Usuario\\.gemini\\antigravity\\scratch\\srm-app\\src\\components\\features\\dashboard\" rmdir \"C:\\Users\\Usuario\\.gemini\\antigravity\\scratch\\srm-app\\src\\components\\features\\dashboard\")",
-      "WebSearch"
+      "WebSearch",
+      "Bash(timeout /t 5)"
     ],
     "deny": [],
     "ask": []

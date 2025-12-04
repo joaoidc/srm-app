@@ -33,7 +33,7 @@
       <div>
         <h2 class="text-xl font-semibold mb-4">Compras</h2>
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <DashboardWidget title="Compras do mês">
+          <DashboardWidget title="Compras do mês" class="pt-2 pb-2">
             <div class="flex flex-col h-full">
               <UiMetricHero
                 :icon="DollarSign"
@@ -142,17 +142,16 @@
             subtitle="Dos últimos 12 meses por status"
           >
             <template #action>
-              <span class="text-xl font-bold text-white">101</span>
+              <div class="flex flex-col items-end">
+                <span
+                  class="text-[10px] uppercase tracking-wider font-semibold text-gray-500 dark:text-gray-400"
+                  >Total</span
+                >
+                <span class="text-2xl font-bold text-primary">101</span>
+              </div>
             </template>
 
             <div ref="pieChartRef" class="w-full h-full min-h-[250px]"></div>
-            <UiChartLegend
-              :items="[
-                { value: 24, label: 'Finalizado', color: 'green' },
-                { value: 27, label: 'Acompanhando', color: 'yellow' },
-                { value: 46, label: 'Pendentes', color: 'red' },
-              ]"
-            />
           </DashboardWidget>
 
           <DashboardWidget
@@ -361,6 +360,10 @@ import UiMetricGrid from "@/components/ui/data-display/UiMetricGrid.vue";
 import UiEmptyState from "@/components/ui/feedback/UiEmptyState.vue";
 import UiChartLegend from "@/components/ui/data-display/UiChartLegend.vue";
 import UiStatusBadgeGroup from "@/components/ui/data-display/UiStatusBadgeGroup.vue";
+import {
+  getPremiumTooltip,
+  premiumTooltipStyle,
+} from "@/utils/formatters/chart";
 
 definePageMeta({
   layout: "default",
@@ -403,20 +406,75 @@ const initCharts = () => {
   if (pieChartRef.value) {
     const chart = echarts.init(pieChartRef.value);
     chart.setOption({
-      tooltip: { trigger: "item" },
-      series: [
-        {
-          type: "pie",
-          radius: ["40%", "70%"],
-          avoidLabelOverlap: false,
-          itemStyle: {
-            borderRadius: 10,
-            borderColor: "#1e293b",
-            borderWidth: 2,
+      baseOption: {
+        tooltip: {
+          trigger: "item",
+          ...premiumTooltipStyle,
+          formatter: (params: any) => getPremiumTooltip(params),
+        },
+        series: [
+          {
+            type: "pie",
+            center: ["50%", "50%"],
+            avoidLabelOverlap: true,
+            itemStyle: {
+              borderRadius: 10,
+              borderColor: "#1e293b",
+              borderWidth: 2,
+            },
+            label: {
+              show: true,
+              position: "outside",
+              formatter: "{b}\n{c}",
+              color: "inherit",
+              fontSize: 12,
+              fontWeight: 500,
+              lineHeight: 18,
+            },
+            labelLine: {
+              show: true,
+              smooth: 0.2,
+              length: 15,
+              length2: 15,
+              lineStyle: {
+                width: 1.5,
+                type: "solid",
+              },
+            },
+            emphasis: {
+              scale: true,
+              scaleSize: 10,
+              label: {
+                show: true,
+                fontSize: 14,
+                fontWeight: "bold",
+              },
+            },
+            data: chartData.value.ocorrenciasPie,
+            radius: ["35%", "60%"],
           },
-          label: { show: false },
-          emphasis: { label: { show: true, fontSize: 20, fontWeight: "bold" } },
-          data: chartData.value.ocorrenciasPie,
+        ],
+      },
+      media: [
+        {
+          query: {
+            maxWidth: 768,
+          },
+          option: {
+            series: [
+              {
+                radius: ["25%", "50%"],
+                label: {
+                  fontSize: 10,
+                  lineHeight: 14,
+                },
+                labelLine: {
+                  length: 5,
+                  length2: 5,
+                },
+              },
+            ],
+          },
         },
       ],
     });
@@ -425,21 +483,41 @@ const initCharts = () => {
   if (lineChartRef.value) {
     const chart = echarts.init(lineChartRef.value);
     chart.setOption({
-      tooltip: { trigger: "axis" },
+      tooltip: {
+        trigger: "axis",
+        ...premiumTooltipStyle,
+        formatter: (params: any) => getPremiumTooltip(params),
+      },
       grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
       xAxis: {
         type: "category",
         boundaryGap: false,
         data: chartData.value.ocorrenciasLine.months,
+        axisLine: { lineStyle: { color: "#334155" } },
+        axisLabel: { color: "#94a3b8" },
       },
-      yAxis: { type: "value", splitLine: { lineStyle: { color: "#334155" } } },
+      yAxis: {
+        type: "value",
+        splitLine: {
+          lineStyle: { color: "#334155", type: "dashed", opacity: 0.3 },
+        },
+        axisLabel: { color: "#94a3b8" },
+      },
       series: [
         {
+          name: "Ocorrências",
           data: chartData.value.ocorrenciasLine.values,
           type: "line",
           smooth: true,
-          areaStyle: { opacity: 0.1 },
-          itemStyle: { color: "#0099ff" },
+          symbol: "circle",
+          symbolSize: 8,
+          itemStyle: { color: "#0099ff", borderColor: "#fff", borderWidth: 2 },
+          areaStyle: {
+            color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+              { offset: 0, color: "rgba(0, 153, 255, 0.3)" },
+              { offset: 1, color: "rgba(0, 153, 255, 0)" },
+            ]),
+          },
         },
       ],
     });
@@ -448,12 +526,17 @@ const initCharts = () => {
   if (barChartRef.value) {
     const chart = echarts.init(barChartRef.value);
     chart.setOption({
-      tooltip: { trigger: "axis" },
+      tooltip: {
+        trigger: "axis",
+        ...premiumTooltipStyle,
+        formatter: (params: any) => getPremiumTooltip(params),
+      },
       grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
       xAxis: { type: "category", data: chartData.value.metaDiaria.days },
       yAxis: { type: "value", splitLine: { lineStyle: { color: "#334155" } } },
       series: [
         {
+          name: "Meta Diária",
           data: chartData.value.metaDiaria.values,
           type: "bar",
           itemStyle: { color: "#0099ff" },
@@ -465,12 +548,17 @@ const initCharts = () => {
   if (discountChartRef.value) {
     const chart = echarts.init(discountChartRef.value);
     chart.setOption({
-      tooltip: { trigger: "axis" },
+      tooltip: {
+        trigger: "axis",
+        ...premiumTooltipStyle,
+        formatter: (params: any) => getPremiumTooltip(params),
+      },
       grid: { left: "3%", right: "4%", bottom: "3%", containLabel: true },
       xAxis: { type: "category", data: chartData.value.descontos.months },
       yAxis: { type: "value", splitLine: { lineStyle: { color: "#334155" } } },
       series: [
         {
+          name: "Descontos",
           data: chartData.value.descontos.values,
           type: "bar",
           barWidth: "20%",
@@ -486,23 +574,8 @@ const initCharts = () => {
       tooltip: {
         trigger: "axis",
         axisPointer: { type: "shadow" },
-        formatter: (params: any) => {
-          let result = `<div class="font-bold mb-1">${params[0].name}</div>`;
-          params.forEach((item: any) => {
-            const value = new Intl.NumberFormat("pt-BR", {
-              style: "currency",
-              currency: "BRL",
-            }).format(item.value);
-            result += `
-              <div class="flex items-center gap-2 text-xs">
-                <span class="w-2 h-2 rounded-full " style="background-color: ${item.color} "></span>
-                <span class="font-medium">${item.seriesName}:</span>
-                <span class="font-medium">${value}</span>
-              </div>
-            `;
-          });
-          return result;
-        },
+        ...premiumTooltipStyle,
+        formatter: (params: any) => getPremiumTooltip(params, params[0].name),
       },
       legend: {
         bottom: 0,
@@ -585,15 +658,32 @@ watch(
 );
 
 onMounted(() => {
+  nextTick(() => {
+    handleResize();
+  });
   window.addEventListener("resize", handleResize);
 });
 
+onUnmounted(() => {
+  window.removeEventListener("resize", handleResize);
+});
+
 const handleResize = () => {
-  echarts.getInstanceByDom(pieChartRef.value!)?.resize();
-  echarts.getInstanceByDom(lineChartRef.value!)?.resize();
-  echarts.getInstanceByDom(barChartRef.value!)?.resize();
-  echarts.getInstanceByDom(discountChartRef.value!)?.resize();
-  echarts.getInstanceByDom(productChartRef.value!)?.resize();
+  if (pieChartRef.value) {
+    echarts.getInstanceByDom(pieChartRef.value)?.resize();
+  }
+  if (lineChartRef.value) {
+    echarts.getInstanceByDom(lineChartRef.value)?.resize();
+  }
+  if (barChartRef.value) {
+    echarts.getInstanceByDom(barChartRef.value)?.resize();
+  }
+  if (discountChartRef.value) {
+    echarts.getInstanceByDom(discountChartRef.value)?.resize();
+  }
+  if (productChartRef.value) {
+    echarts.getInstanceByDom(productChartRef.value)?.resize();
+  }
 };
 </script>
 

@@ -14,6 +14,7 @@ type HydrationStrategies = {
 type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {}, {}, { hydrated: () => void }> & T
 
 interface _GlobalComponents {
+  'AiChatWidget': typeof import("../../src/components/AiChatWidget.vue")['default']
   'CommonUserProfile': typeof import("../../src/components/common/UserProfile.vue")['default']
   'LayoutSidebar': typeof import("../../src/components/layout/Sidebar.vue")['default']
   'UiDashboardListItem': typeof import("../../src/components/ui/DashboardListItem.vue")['default']
@@ -58,6 +59,7 @@ interface _GlobalComponents {
   'Html': typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Html']
   'Body': typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Body']
   'NuxtIsland': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
+  'LazyAiChatWidget': LazyComponent<typeof import("../../src/components/AiChatWidget.vue")['default']>
   'LazyCommonUserProfile': LazyComponent<typeof import("../../src/components/common/UserProfile.vue")['default']>
   'LazyLayoutSidebar': LazyComponent<typeof import("../../src/components/layout/Sidebar.vue")['default']>
   'LazyUiDashboardListItem': LazyComponent<typeof import("../../src/components/ui/DashboardListItem.vue")['default']>

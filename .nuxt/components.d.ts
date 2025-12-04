@@ -37,6 +37,7 @@ type LazyComponent<T> = DefineComponent<
 > &
   T;
 
+export const AiChatWidget: (typeof import('../src/components/AiChatWidget.vue'))['default'];
 export const CommonUserProfile: (typeof import('../src/components/common/UserProfile.vue'))['default'];
 export const LayoutSidebar: (typeof import('../src/components/layout/Sidebar.vue'))['default'];
 export const UiDashboardListItem: (typeof import('../src/components/ui/DashboardListItem.vue'))['default'];
@@ -81,6 +82,9 @@ export const Head: (typeof import('../node_modules/nuxt/dist/head/runtime/compon
 export const Html: (typeof import('../node_modules/nuxt/dist/head/runtime/components'))['Html'];
 export const Body: (typeof import('../node_modules/nuxt/dist/head/runtime/components'))['Body'];
 export const NuxtIsland: (typeof import('../node_modules/nuxt/dist/app/components/nuxt-island'))['default'];
+export const LazyAiChatWidget: LazyComponent<
+  (typeof import('../src/components/AiChatWidget.vue'))['default']
+>;
 export const LazyCommonUserProfile: LazyComponent<
   (typeof import('../src/components/common/UserProfile.vue'))['default']
 >;

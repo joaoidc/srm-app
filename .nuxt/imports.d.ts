@@ -35,6 +35,7 @@ export { parseJwt, isTokenExpired } from '../src/utils/jwt';
 export { useAuth } from '../src/composables/core/useAuth';
 export { useAuthPersistence } from '../src/composables/features/useAuthPersistence';
 export { useTheme } from '../src/composables/ui/useTheme';
+export { premiumTooltipStyle, getPremiumTooltip } from '../src/utils/formatters/chart';
 export { formatCurrency, formatNumber, formatKg } from '../src/utils/formatters/currency';
 export { formatDate, formatDateTime, formatDayMonth } from '../src/utils/formatters/date';
 export { groupBy, unique, sortBy } from '../src/utils/helpers/array';
