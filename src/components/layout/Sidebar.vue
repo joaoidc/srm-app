@@ -96,10 +96,10 @@ const menuItems = [
   { label: "Fornecedores", path: "/fornecedores", icon: Recycle },
   { label: "Prospectos", path: "/prospectos", icon: HeartHandshake },
   { label: "Ocorrências", path: "/ocorrencias", icon: MessageSquare },
-  { label: "Check-ins", path: "/checkins", icon: MapPin },
-  { label: "Rota", path: "/rota", icon: Route },
+  { label: "Check-in", path: "/checkin", icon: MapPin },
+  { label: "Rota", path: "/rotas", icon: Route },
   { label: "Concorrentes", path: "/concorrentes", icon: Crosshair },
-  { label: "Time", path: "/time", icon: Users },
+  { label: "Time", path: "/equipe", icon: Users },
 ];
 </script>
 

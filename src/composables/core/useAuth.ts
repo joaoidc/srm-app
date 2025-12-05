@@ -10,41 +10,42 @@
  * ```
  */
 
-import type { LoginCredentials } from '@/types/auth'
+import type { LoginCredentials } from "@/types/auth";
+import { useAuthStore } from "~/layers/login/stores/auth";
 
 export const useAuth = () => {
-  const authStore = useAuthStore()
+  const authStore = useAuthStore();
 
   /**
    * Login com credenciais
    * Redireciona automaticamente para home após sucesso
    */
   const login = async (credentials: LoginCredentials) => {
-    const result = await authStore.login(credentials)
+    const result = await authStore.login(credentials);
 
     if (result.success) {
       // Redireciona para home após login bem-sucedido
-      await navigateTo('/')
+      await navigateTo("/");
     }
 
-    return result
-  }
+    return result;
+  };
 
   /**
    * Logout
    * Redireciona para login (já feito na action da store)
    */
   const logout = async () => {
-    await authStore.logout()
-  }
+    await authStore.logout();
+  };
 
   /**
    * Inicializa autenticação
    * Geralmente chamado pelo plugin, mas exposto para casos especiais
    */
   const initAuth = async () => {
-    return await authStore.initAuth()
-  }
+    return await authStore.initAuth();
+  };
 
   // ==================== RETURN ====================
 
@@ -63,6 +64,6 @@ export const useAuth = () => {
     login,
     logout,
     initAuth,
-    clearError: authStore.clearError
-  }
-}
+    clearError: authStore.clearError,
+  };
+};

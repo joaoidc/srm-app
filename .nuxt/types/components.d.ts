@@ -15,6 +15,7 @@ type LazyComponent<T> = DefineComponent<HydrationStrategies, {}, {}, {}, {}, {},
 
 interface _GlobalComponents {
   'AiChatWidget': typeof import("../../src/components/AiChatWidget.vue")['default']
+  'CommonAvisoEmConstrucao': typeof import("../../src/components/common/AvisoEmConstrucao.vue")['default']
   'CommonUserProfile': typeof import("../../src/components/common/UserProfile.vue")['default']
   'LayoutSidebar': typeof import("../../src/components/layout/Sidebar.vue")['default']
   'UiDashboardListItem': typeof import("../../src/components/ui/DashboardListItem.vue")['default']
@@ -32,10 +33,10 @@ interface _GlobalComponents {
   'UiFormsUiInput': typeof import("../../src/components/ui/forms/UiInput.vue")['default']
   'UiLayoutUiCard': typeof import("../../src/components/ui/layout/UiCard.vue")['default']
   'UiOverlaysUiModal': typeof import("../../src/components/ui/overlays/UiModal.vue")['default']
-  'AttendantStatusCard': typeof import("../../src/layers/dashboard/components/AttendantStatusCard.vue")['default']
-  'DashboardWidget': typeof import("../../src/layers/dashboard/components/DashboardWidget.vue")['default']
-  'MobileStatsWidget': typeof import("../../src/layers/dashboard/components/MobileStatsWidget.vue")['default']
-  'StatCard': typeof import("../../src/layers/dashboard/components/StatCard.vue")['default']
+  'AttendantStatusCard': typeof import("../../src/layers/painel/components/AttendantStatusCard.vue")['default']
+  'DashboardWidget': typeof import("../../src/layers/painel/components/DashboardWidget.vue")['default']
+  'MobileStatsWidget': typeof import("../../src/layers/painel/components/MobileStatsWidget.vue")['default']
+  'StatCard': typeof import("../../src/layers/painel/components/StatCard.vue")['default']
   'NuxtWelcome': typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']
   'NuxtLayout': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']
   'NuxtErrorBoundary': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']
@@ -60,6 +61,7 @@ interface _GlobalComponents {
   'Body': typeof import("../../node_modules/nuxt/dist/head/runtime/components")['Body']
   'NuxtIsland': typeof import("../../node_modules/nuxt/dist/app/components/nuxt-island")['default']
   'LazyAiChatWidget': LazyComponent<typeof import("../../src/components/AiChatWidget.vue")['default']>
+  'LazyCommonAvisoEmConstrucao': LazyComponent<typeof import("../../src/components/common/AvisoEmConstrucao.vue")['default']>
   'LazyCommonUserProfile': LazyComponent<typeof import("../../src/components/common/UserProfile.vue")['default']>
   'LazyLayoutSidebar': LazyComponent<typeof import("../../src/components/layout/Sidebar.vue")['default']>
   'LazyUiDashboardListItem': LazyComponent<typeof import("../../src/components/ui/DashboardListItem.vue")['default']>
@@ -77,10 +79,10 @@ interface _GlobalComponents {
   'LazyUiFormsUiInput': LazyComponent<typeof import("../../src/components/ui/forms/UiInput.vue")['default']>
   'LazyUiLayoutUiCard': LazyComponent<typeof import("../../src/components/ui/layout/UiCard.vue")['default']>
   'LazyUiOverlaysUiModal': LazyComponent<typeof import("../../src/components/ui/overlays/UiModal.vue")['default']>
-  'LazyAttendantStatusCard': LazyComponent<typeof import("../../src/layers/dashboard/components/AttendantStatusCard.vue")['default']>
-  'LazyDashboardWidget': LazyComponent<typeof import("../../src/layers/dashboard/components/DashboardWidget.vue")['default']>
-  'LazyMobileStatsWidget': LazyComponent<typeof import("../../src/layers/dashboard/components/MobileStatsWidget.vue")['default']>
-  'LazyStatCard': LazyComponent<typeof import("../../src/layers/dashboard/components/StatCard.vue")['default']>
+  'LazyAttendantStatusCard': LazyComponent<typeof import("../../src/layers/painel/components/AttendantStatusCard.vue")['default']>
+  'LazyDashboardWidget': LazyComponent<typeof import("../../src/layers/painel/components/DashboardWidget.vue")['default']>
+  'LazyMobileStatsWidget': LazyComponent<typeof import("../../src/layers/painel/components/MobileStatsWidget.vue")['default']>
+  'LazyStatCard': LazyComponent<typeof import("../../src/layers/painel/components/StatCard.vue")['default']>
   'LazyNuxtWelcome': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/welcome.vue")['default']>
   'LazyNuxtLayout': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-layout")['default']>
   'LazyNuxtErrorBoundary': LazyComponent<typeof import("../../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue")['default']>

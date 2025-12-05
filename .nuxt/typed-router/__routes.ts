@@ -7,7 +7,16 @@
 /**
  * Exhaustive list of all the available route names in the app
  * */
-export type RoutesNamesList = 'id' | 'index' | 'login';
+export type RoutesNamesList =
+  | 'index'
+  | 'login'
+  | 'checkin'
+  | 'rotas'
+  | 'ocorrencias'
+  | 'prospectos'
+  | 'concorrentes'
+  | 'equipe'
+  | 'fornecedores';
 
 /**
  * Routes params are only required for the exact targeted route name,
@@ -16,11 +25,15 @@ export type RoutesNamesList = 'id' | 'index' | 'login';
  *
  * */
 export type RoutesParamsRecord = {
-  id: {
-    id: string | number;
-  };
   index: never;
   login: never;
+  checkin: never;
+  rotas: never;
+  ocorrencias: never;
+  prospectos: never;
+  concorrentes: never;
+  equipe: never;
+  fornecedores: never;
 };
 
 /**
@@ -28,11 +41,15 @@ export type RoutesParamsRecord = {
  *
  * */
 export type RoutesParamsRecordResolved = {
-  id: {
-    id: string;
-  };
   index: never;
   login: never;
+  checkin: never;
+  rotas: never;
+  ocorrencias: never;
+  prospectos: never;
+  concorrentes: never;
+  equipe: never;
+  fornecedores: never;
 };
 
 /**
@@ -40,14 +57,15 @@ export type RoutesParamsRecordResolved = {
  * It's used for programmatic navigation like router.push or <NuxtLink/>
  * */
 export type RoutesNamedLocations =
-  | {
-      name: 'id';
-      params: {
-        id: string | number;
-      };
-    }
   | { name: 'index' }
-  | { name: 'login' };
+  | { name: 'login' }
+  | { name: 'checkin' }
+  | { name: 'rotas' }
+  | { name: 'ocorrencias' }
+  | { name: 'prospectos' }
+  | { name: 'concorrentes' }
+  | { name: 'equipe' }
+  | { name: 'fornecedores' };
 
 /**
  * Type returned by a resolved Route that will allow to type guard the route name.
@@ -57,16 +75,37 @@ export type RoutesNamedLocationsResolved = {
   name: RoutesNamesList;
   params: RoutesParamsRecord[keyof RoutesParamsRecord];
 } & (
-  | {
-      name: 'id';
-      params: {
-        id: string;
-      };
-    }
   | { name: 'index' }
   | { name: 'login' }
+  | { name: 'checkin' }
+  | { name: 'rotas' }
+  | { name: 'ocorrencias' }
+  | { name: 'prospectos' }
+  | { name: 'concorrentes' }
+  | { name: 'equipe' }
+  | { name: 'fornecedores' }
 );
 
-export type RoutesNamesListRecord = { id: 'id'; index: 'index'; login: 'login' };
+export type RoutesNamesListRecord = {
+  index: 'index';
+  login: 'login';
+  checkin: 'checkin';
+  rotas: 'rotas';
+  ocorrencias: 'ocorrencias';
+  prospectos: 'prospectos';
+  concorrentes: 'concorrentes';
+  equipe: 'equipe';
+  fornecedores: 'fornecedores';
+};
 
-export const routesNames = { id: 'id' as const, index: 'index' as const, login: 'login' as const };
+export const routesNames = {
+  index: 'index' as const,
+  login: 'login' as const,
+  checkin: 'checkin' as const,
+  rotas: 'rotas' as const,
+  ocorrencias: 'ocorrencias' as const,
+  prospectos: 'prospectos' as const,
+  concorrentes: 'concorrentes' as const,
+  equipe: 'equipe' as const,
+  fornecedores: 'fornecedores' as const,
+};

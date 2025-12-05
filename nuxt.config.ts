@@ -4,14 +4,15 @@ export default defineNuxtConfig({
   srcDir: "src/",
 
   extends: [
-    "./src/layers/auth",
-    "./src/layers/dashboard",
-    "./src/layers/suppliers",
-    "./src/layers/team",
-    "./src/layers/competitors",
-    "./src/layers/prospects",
-    "./src/layers/occurrences",
-    "./src/layers/checkins",
+    "./src/layers/login",
+    "./src/layers/painel",
+    "./src/layers/fornecedores",
+    "./src/layers/equipe",
+    "./src/layers/concorrentes",
+    "./src/layers/prospectos",
+    "./src/layers/ocorrencias",
+    "./src/layers/rotas",
+    "./src/layers/checkin",
   ],
 
   // desabilita o devtools nativo do nuxt, me ferrei pra achar isso

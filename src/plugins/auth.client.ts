@@ -8,11 +8,13 @@
  * o middleware de rotas seja executado.
  */
 
+import { useAuthStore } from "~/layers/login/stores/auth";
+
 export default defineNuxtPlugin(async () => {
-  const authStore = useAuthStore()
+  const authStore = useAuthStore();
 
   // Inicializa autenticação validando cookie HttpOnly
   // Se cookie válido: authStore.user será populado
   // Se cookie inválido: authStore.user será null
-  await authStore.initAuth()
-})
+  await authStore.initAuth();
+});

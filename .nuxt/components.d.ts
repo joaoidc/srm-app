@@ -38,6 +38,7 @@ type LazyComponent<T> = DefineComponent<
   T;
 
 export const AiChatWidget: (typeof import('../src/components/AiChatWidget.vue'))['default'];
+export const CommonAvisoEmConstrucao: (typeof import('../src/components/common/AvisoEmConstrucao.vue'))['default'];
 export const CommonUserProfile: (typeof import('../src/components/common/UserProfile.vue'))['default'];
 export const LayoutSidebar: (typeof import('../src/components/layout/Sidebar.vue'))['default'];
 export const UiDashboardListItem: (typeof import('../src/components/ui/DashboardListItem.vue'))['default'];
@@ -55,10 +56,10 @@ export const UiFormsUiCheckbox: (typeof import('../src/components/ui/forms/UiChe
 export const UiFormsUiInput: (typeof import('../src/components/ui/forms/UiInput.vue'))['default'];
 export const UiLayoutUiCard: (typeof import('../src/components/ui/layout/UiCard.vue'))['default'];
 export const UiOverlaysUiModal: (typeof import('../src/components/ui/overlays/UiModal.vue'))['default'];
-export const AttendantStatusCard: (typeof import('../src/layers/dashboard/components/AttendantStatusCard.vue'))['default'];
-export const DashboardWidget: (typeof import('../src/layers/dashboard/components/DashboardWidget.vue'))['default'];
-export const MobileStatsWidget: (typeof import('../src/layers/dashboard/components/MobileStatsWidget.vue'))['default'];
-export const StatCard: (typeof import('../src/layers/dashboard/components/StatCard.vue'))['default'];
+export const AttendantStatusCard: (typeof import('../src/layers/painel/components/AttendantStatusCard.vue'))['default'];
+export const DashboardWidget: (typeof import('../src/layers/painel/components/DashboardWidget.vue'))['default'];
+export const MobileStatsWidget: (typeof import('../src/layers/painel/components/MobileStatsWidget.vue'))['default'];
+export const StatCard: (typeof import('../src/layers/painel/components/StatCard.vue'))['default'];
 export const NuxtWelcome: (typeof import('../node_modules/nuxt/dist/app/components/welcome.vue'))['default'];
 export const NuxtLayout: (typeof import('../node_modules/nuxt/dist/app/components/nuxt-layout'))['default'];
 export const NuxtErrorBoundary: (typeof import('../node_modules/nuxt/dist/app/components/nuxt-error-boundary.vue'))['default'];
@@ -84,6 +85,9 @@ export const Body: (typeof import('../node_modules/nuxt/dist/head/runtime/compon
 export const NuxtIsland: (typeof import('../node_modules/nuxt/dist/app/components/nuxt-island'))['default'];
 export const LazyAiChatWidget: LazyComponent<
   (typeof import('../src/components/AiChatWidget.vue'))['default']
+>;
+export const LazyCommonAvisoEmConstrucao: LazyComponent<
+  (typeof import('../src/components/common/AvisoEmConstrucao.vue'))['default']
 >;
 export const LazyCommonUserProfile: LazyComponent<
   (typeof import('../src/components/common/UserProfile.vue'))['default']
@@ -137,16 +141,16 @@ export const LazyUiOverlaysUiModal: LazyComponent<
   (typeof import('../src/components/ui/overlays/UiModal.vue'))['default']
 >;
 export const LazyAttendantStatusCard: LazyComponent<
-  (typeof import('../src/layers/dashboard/components/AttendantStatusCard.vue'))['default']
+  (typeof import('../src/layers/painel/components/AttendantStatusCard.vue'))['default']
 >;
 export const LazyDashboardWidget: LazyComponent<
-  (typeof import('../src/layers/dashboard/components/DashboardWidget.vue'))['default']
+  (typeof import('../src/layers/painel/components/DashboardWidget.vue'))['default']
 >;
 export const LazyMobileStatsWidget: LazyComponent<
-  (typeof import('../src/layers/dashboard/components/MobileStatsWidget.vue'))['default']
+  (typeof import('../src/layers/painel/components/MobileStatsWidget.vue'))['default']
 >;
 export const LazyStatCard: LazyComponent<
-  (typeof import('../src/layers/dashboard/components/StatCard.vue'))['default']
+  (typeof import('../src/layers/painel/components/StatCard.vue'))['default']
 >;
 export const LazyNuxtWelcome: LazyComponent<
   (typeof import('../node_modules/nuxt/dist/app/components/welcome.vue'))['default']

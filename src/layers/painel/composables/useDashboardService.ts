@@ -1,3 +1,4 @@
+import { useAuthStore } from "~/layers/login/stores/auth";
 import type { DashboardApiResponse } from "../types/dashboard";
 
 interface DashboardFilters {

@@ -16,6 +16,7 @@
  */
 
 import type { $Fetch } from "ofetch";
+import { useAuthStore } from "~/layers/login/stores/auth";
 
 /**
  * Cria um cliente $fetch configurado com interceptors
