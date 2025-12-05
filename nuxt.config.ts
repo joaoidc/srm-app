@@ -22,8 +22,14 @@ export default defineNuxtConfig({
     "@pinia/nuxt",
     "@nuxt/image",
     "nuxt-typed-router",
-    "@nuxtjs/tailwindcss",
   ],
+
+  postcss: {
+    plugins: {
+      tailwindcss: {},
+      autoprefixer: {},
+    },
+  },
 
   css: [
     "~/assets/styles/variables.css",
@@ -65,8 +71,31 @@ export default defineNuxtConfig({
     },
   },
 
+
+  compatibilityDate: "2024-11-27",
+
+  vite: {
+    esbuild: {
+      target: 'es2020',
+    },
+    optimizeDeps: {
+      esbuildOptions: {
+        target: 'es2020',
+      },
+      exclude: ['tailwindcss'],
+    },
+    ssr: {
+      noExternal: ['tailwindcss'],
+    },
+  },
+
   nitro: {
     preset: "static",
+    esbuild: {
+      options: {
+        target: 'es2020',
+      },
+    },
     devProxy: {
       "/api/v1": {
         target: "https://api.sagierp.com.br/api/v1",
@@ -75,6 +104,4 @@ export default defineNuxtConfig({
       },
     },
   },
-
-  compatibilityDate: "2024-11-27",
 });
