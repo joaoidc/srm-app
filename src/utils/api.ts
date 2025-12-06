@@ -70,9 +70,11 @@ const createApiClient = (baseURL: string): $Fetch => {
  * Cliente API para endpoints v2 (Dashboard, SRM, etc.)
  * Base URL: apiV2Url do .env
  */
-export const useMainApi = () => {
+export const useMainApi = (homol?: boolean) => {
   const config = useRuntimeConfig();
-  return createApiClient(config.public.apiV2Url as string);
+  return createApiClient(
+    (homol ? config.public.apiV2UrlHomol : config.public.apiV2Url) as string
+  );
 };
 
 /**

@@ -273,6 +273,7 @@
                 <DashboardListItem
                   v-for="item in paginatedItems"
                   :key="item.name"
+                  @click="handleOpenParceiroModal(item)"
                 >
                   <template #leading>
                     <DateBox label="DIA">{{ item.date.split("/")[0] }}</DateBox>
@@ -346,6 +347,11 @@
         </div>
       </div>
     </div>
+
+    <ModalDetalhesParceiro
+      v-model="showParceiroModal"
+      :parceiro="parceiroSelecionado"
+    />
   </div>
 </template>
 
@@ -369,6 +375,7 @@ import UiMetricGrid from "@/components/ui/data-display/UiMetricGrid.vue";
 import UiEmptyState from "@/components/ui/feedback/UiEmptyState.vue";
 import UiChartLegend from "@/components/ui/data-display/UiChartLegend.vue";
 import UiStatusBadgeGroup from "@/components/ui/data-display/UiStatusBadgeGroup.vue";
+import ModalDetalhesParceiro from "../components/ModalDetalhesParceiro.vue";
 import {
   getPremiumTooltip,
   premiumTooltipStyle,
@@ -404,6 +411,14 @@ const {
   chartData,
   atendimentosVencidos,
 } = storeToRefs(dashboardStore);
+
+const showParceiroModal = ref(false);
+const parceiroSelecionado = ref(null);
+
+const handleOpenParceiroModal = (parceiro: any) => {
+  parceiroSelecionado.value = parceiro;
+  showParceiroModal.value = true;
+};
 
 const totalOcorrencias = computed(() => {
   return chartData.value.ocorrenciasPie.reduce(

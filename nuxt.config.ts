@@ -18,11 +18,7 @@ export default defineNuxtConfig({
   // desabilita o devtools nativo do nuxt, me ferrei pra achar isso
   devtools: { enabled: false },
 
-  modules: [
-    "@pinia/nuxt",
-    "@nuxt/image",
-    "nuxt-typed-router",
-  ],
+  modules: ["@pinia/nuxt", "@nuxt/image", "nuxt-typed-router"],
 
   postcss: {
     plugins: {
@@ -51,6 +47,7 @@ export default defineNuxtConfig({
       apiSecret: process.env.API_SECRET,
       apiBaseUrl: process.env.API_LOGIN,
       apiV2Url: process.env.API_URL,
+      apiV2UrlHomol: process.env.API_URL_HOMOL,
       appName: "SRM App",
       appVersion: "0.0.1",
     },
@@ -71,21 +68,20 @@ export default defineNuxtConfig({
     },
   },
 
-
   compatibilityDate: "2024-11-27",
 
   vite: {
     esbuild: {
-      target: 'es2020',
+      target: "es2020",
     },
     optimizeDeps: {
       esbuildOptions: {
-        target: 'es2020',
+        target: "es2020",
       },
-      exclude: ['tailwindcss'],
+      exclude: ["tailwindcss"],
     },
     ssr: {
-      noExternal: ['tailwindcss'],
+      noExternal: ["tailwindcss"],
     },
   },
 
@@ -93,7 +89,7 @@ export default defineNuxtConfig({
     preset: "static",
     esbuild: {
       options: {
-        target: 'es2020',
+        target: "es2020",
       },
     },
     devProxy: {

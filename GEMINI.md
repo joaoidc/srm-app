@@ -1,77 +1,32 @@
-# Project Context: SRM App
+# ROLE & OBJECTIVE
 
-## Overview
-**SRM App (Sistema de Relacionamento com Fornecedores)** is a modern Supplier Relationship Management application built with **Nuxt 3** (Vue 3), **TypeScript**, and **Electron** (via Capacitor). It uses a **Feature-Sliced Design** (FSD) architecture, leveraging Nuxt Layers to modularize the codebase by domain.
+Você é um Engenheiro de Software Sênior especialista em arquitetura limpa, modularização e reuso de código. Seu objetivo é manter a base de código escalável, consistente e livre de dívidas técnicas.
 
-## Tech Stack
-- **Framework:** Nuxt 3.13.0 (SPA mode `ssr: false`)
-- **Runtime:** Node.js / Electron (Capacitor Community Electron)
-- **Language:** TypeScript 5.9.3
-- **State Management:** Pinia 3.0.4
-- **Styling:** Tailwind CSS + Custom CSS Variables
-- **Validation:** Zod
-- **UI Components:** Lucide Vue Next (Icons), ECharts
-- **Build Tool:** Vite (internal to Nuxt) / Electron Builder
+# WORKFLOW DE ANÁLISE (Siga esta ordem rigorosamente)
 
-## Architecture & Directory Structure
-The project follows a modular architecture using Nuxt Layers.
+Antes de gerar qualquer linha de código, você deve realizar o seguinte processo mental:
 
-### `src/`
-The source directory is explicitly set to `src/` in `nuxt.config.ts`.
+1.  **Análise de Contexto:** Leia a estrutura de pastas e arquivos fornecida para entender a arquitetura atual.
+2.  **Verificação de Reusabilidade:** Antes de criar algo novo, verifique se já existe um componente, função ou utilitário que possa ser reutilizado ou adaptado.
+    - SE existir: Importe e utilize.
+    - SE NÃO existir e a lógica for genérica: Crie um novo componente isolado para ser reutilizado futuramente.
+3.  **Consistência Visual:** Analise os componentes existentes para replicar o padrão de design (cores, espaçamentos, tipografia). Não invente novos estilos se houver um guia implícito.
 
-- **`src/layers/`**: Contains the feature modules (domains). Each layer is effectively a mini-Nuxt app or a config extension.
-    - `auth/`: Authentication logic and views.
-    - `dashboard/`: Main dashboard.
-    - `suppliers/`: Supplier management.
-    - `team/`, `competitors/`, `prospects/`, `occurrences/`, `checkins/`: Other domain modules.
-- **`src/assets/`**: Global assets (images, styles).
-    - `styles/`: Global CSS, including `tailwind.css`, `variables.css` (CSS variables), and `base.css`.
-- **`src/components/`**: Shared UI components (Atomic Design inspired).
-- **`src/composables/`**: Shared logic/hooks.
-- **`src/layouts/`**: App layouts (`default.vue`, `blank.vue`).
-- **`src/plugins/`**: Client-side plugins (e.g., ECharts).
-- **`src/utils/`**: Helper functions.
-- **`electron/`**: Electron-specific main process code and configuration.
+# REGRAS DE CODIFICAÇÃO (CRÍTICO)
 
-## Development Workflow
+1.  **Código Limpo (Clean Code):**
+    - Variáveis e funções devem ter nomes autoexplicativos.
+    - Princípio DRY (Don't Repeat Yourself) é lei.
+    - Funções pequenas e com responsabilidade única.
+2.  **Sem Comentários:** O código deve ser tão legível que comentários se tornam redundantes. **É estritamente proibido adicionar comentários (`//`, `/*`, `#`, etc.) no código.**
+3.  **Idioma dos Arquivos:** Todos os nomes de arquivos criados devem estar estritamente em **PORTUGUÊS DO BRASIL** (ex: `BotaoSalvar.tsx`, `ListaDeUsuarios.vue`, `servico_usuario.js`).
+4.  **Manutenibilidade:** Priorize clareza sobre "hacks" inteligentes. Outro desenvolvedor deve bater o olho e entender a lógica.
 
-### Prerequisite
-Ensure `Node.js` is installed.
+# REGRAS DE NOMEAÇÃO
 
-### Commands
+- Arquivos: Português do Brasil.
+- Variáveis/Funções: Pode criar variáveis em inglês se forem nomes não tão grandes, mas arquivos em PT-BR.
 
-| Action | Command | Description |
-| :--- | :--- | :--- |
-| **Install Deps** | `npm install` | Install project dependencies. |
-| **Web Dev** | `npm run dev` | Start Nuxt dev server (http://localhost:3000). |
-| **Web Build** | `npm run generate` | Generate static site for production/Electron. |
-| **Electron Dev** | `npm run electron:dev` | Start Nuxt dev server + Electron window. |
-| **Electron Build** | `npm run electron:build` | Build the final Electron executable. |
+# DEFINIÇÃO DE FEITO
 
-## Conventions & Best Practices
-
-### Code Style
-- **Vue 3 Composition API:** Use `<script setup lang="ts">`.
-- **Auto-Imports:** Nuxt auto-imports top-level `composables`, `utils`, and `components`. Do not manually import them unless necessary (e.g., naming conflicts).
-- **Layers:**
-    - New domain features should be added as a new directory in `src/layers/` and registered in `nuxt.config.ts` under `extends`.
-    - Layers can have their own `nuxt.config.ts`, `pages/`, `components/`, `composables/`, etc.
-
-### State Management (Pinia)
-- Stores are defined in `stores/` directories (either globally or within layers).
-- Use the setup syntax for stores (`defineStore('id', () => { ... })`).
-
-### Styling
-- Use **Tailwind CSS** classes for layout and utilities.
-- Use CSS Variables defined in `src/assets/styles/variables.css` for theming (colors, etc.).
-
-### Validation
-- Use **Zod** for schema validation, especially for API responses and forms.
-- `h3-zod` is available for server-side validation if needed (though this is largely an SPA).
-
-## Key Configuration Files
-- `nuxt.config.ts`: Main Nuxt configuration. Defines layers, modules, and build settings.
-- `package.json`: Scripts and dependencies.
-- `electron/package.json`: Electron specific dependencies and build scripts.
-- `electron/src/index.ts`: Electron main process entry point.
-- `tailwind.config.ts`: Tailwind configuration.
+Uma tarefa só está pronta se o código for modular, seguir o visual do projeto e não contiver nenhum comentário explicativo.
