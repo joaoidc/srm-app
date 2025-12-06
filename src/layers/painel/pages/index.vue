@@ -329,6 +329,7 @@
                   v-for="(item, idx) in paginatedItems"
                   :key="idx"
                   class="min-h-[60px]"
+                  @click="handleOpenAtendenteModal(item)"
                 >
                   <template #leading>
                     <div class="flex items-center gap-2">
@@ -351,6 +352,7 @@
     <ModalDetalhesParceiro
       v-model="showParceiroModal"
       :parceiro="parceiroSelecionado"
+      :variant="modalVariant"
     />
   </div>
 </template>
@@ -414,9 +416,20 @@ const {
 
 const showParceiroModal = ref(false);
 const parceiroSelecionado = ref(null);
+const modalVariant = ref("parceiro");
 
 const handleOpenParceiroModal = (parceiro: any) => {
+  modalVariant.value = "parceiro";
   parceiroSelecionado.value = parceiro;
+  showParceiroModal.value = true;
+};
+
+const handleOpenAtendenteModal = (atendente: any) => {
+  modalVariant.value = "atendente";
+  parceiroSelecionado.value = {
+    ...atendente,
+    name: atendente.role,
+  };
   showParceiroModal.value = true;
 };
 
@@ -444,9 +457,8 @@ const initCharts = () => {
       echarts.getInstanceByDom(pieChartRef.value) ||
       echarts.init(pieChartRef.value);
 
-    // Map colors to data
     const coloredData = chartData.value.ocorrenciasPie.map((item) => {
-      let colorVar = "--color-status-finalizado"; // Default
+      let colorVar = "--color-status-finalizado";
       switch (item.name) {
         case "Finalizado":
           colorVar = "--color-status-finalizado";

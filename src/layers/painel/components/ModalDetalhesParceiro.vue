@@ -131,7 +131,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed, watch } from "vue";
 import { MessageSquare, Presentation, UserPlus, Edit } from "lucide-vue-next";
 import UiModal from "@/components/ui/overlays/UiModal.vue";
 import UiButton from "@/components/ui/buttons/UiButton.vue";
@@ -146,23 +146,50 @@ const props = defineProps({
     type: Object,
     default: null,
   },
+  variant: {
+    type: String,
+    default: "parceiro", // parceiro | atendente
+  },
 });
 
 defineEmits(["update:modelValue", "close"]);
 
-const activeTab = ref("atendimentos");
+const activeTab = ref(
+  props.variant === "atendente" ? "agendamentos" : "atendimentos"
+);
 const tabButtonRefs = ref<HTMLElement[]>([]);
 
-const tabs = [
+const allTabs = [
   { id: "cadastro", label: "Dados de Cadastro" },
   { id: "contatos", label: "Contatos" },
   { id: "cargas", label: "Cargas" },
+  { id: "agendamentos", label: "Agendamentos" },
   { id: "atendimentos", label: "Atendimentos" },
   { id: "coletas", label: "Coletas" },
   { id: "precos", label: "Preços" },
-  { id: "checkins", label: "Check-ins" },
+  { id: "checkins", label: "Check-in's" },
   { id: "favorecidos", label: "Favorecidos" },
 ];
+
+const tabs = computed(() => {
+  if (props.variant === "atendente") {
+    return allTabs.filter((t) =>
+      ["agendamentos", "atendimentos", "checkins"].includes(t.id)
+    );
+  }
+  return allTabs.filter((t) => t.id !== "agendamentos");
+});
+
+watch(
+  () => props.variant,
+  (newVariant) => {
+    if (newVariant === "atendente") {
+      activeTab.value = "agendamentos";
+    } else {
+      activeTab.value = "atendimentos";
+    }
+  }
+);
 
 const mockAtendimentos = ref([]);
 
@@ -190,7 +217,6 @@ const selectTab = (tabId: string, index: number) => {
   opacity: 0;
 }
 
-/* Hide scrollbar structure but allow scrolling functionality */
 .no-scrollbar::-webkit-scrollbar {
   display: none;
 }
@@ -200,7 +226,6 @@ const selectTab = (tabId: string, index: number) => {
   scrollbar-width: none;
 }
 
-/* Gradient mask for tabs affordance on mobile */
 .tabs-scroll-container {
   mask-image: linear-gradient(to right, black 85%, transparent 100%);
   -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%);

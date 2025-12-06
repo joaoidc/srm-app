@@ -1,20 +1,22 @@
 <template>
   <div class="space-y-4">
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-      <UiInput
+      <input
         v-model="filters.fantasia"
+        type="text"
         placeholder="Fantasia"
-        class="border"
+        class="w-full rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all border"
         style="
           background-color: var(--color-surface);
           border-color: var(--color-border);
           color: var(--color-text);
         "
       />
-      <UiInput
+      <input
         v-model="filters.cidade"
+        type="text"
         placeholder="Cidade"
-        class="border"
+        class="w-full rounded-lg px-4 py-2.5 focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-all border"
         style="
           background-color: var(--color-surface);
           border-color: var(--color-border);
@@ -102,7 +104,6 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { X } from "lucide-vue-next";
-import UiInput from "@/components/ui/forms/UiInput.vue";
 
 const props = defineProps({
   modelValue: {

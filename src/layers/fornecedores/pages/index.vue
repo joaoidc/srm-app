@@ -98,7 +98,7 @@
 
     <!-- Collapsible Filters -->
     <div v-show="showFilters" class="mb-6">
-      <SupplierFilters v-model="filters" />
+      <FiltrosFornecedores v-model="filters" />
     </div>
 
     <!-- Content -->
@@ -108,9 +108,12 @@
           class="mb-4 font-semibold text-sm"
           style="color: var(--color-primary)"
         >
-          {{ filteredSuppliers.length }} resultados
+          {{ fornecedoresFiltrados.length }} resultados
         </div>
-        <SupplierList :suppliers="filteredSuppliers" />
+        <ListaFornecedores
+          :fornecedores="fornecedoresFiltrados"
+          @select="handleSelectFornecedor"
+        />
 
         <!-- Pagination Placeholder -->
         <div class="mt-6 flex justify-center gap-2">
@@ -144,9 +147,11 @@
       </div>
 
       <div v-else>
-        <SupplierMap :suppliers="filteredSuppliers" />
+        <MapaFornecedores :fornecedores="fornecedoresFiltrados" />
       </div>
     </div>
+
+    <ModalDetalhesParceiro v-model="showModal" :parceiro="selectedFornecedor" />
   </div>
 </template>
 
@@ -160,12 +165,11 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-vue-next";
-import SupplierList from "../components/SupplierList.vue";
-import SupplierMap from "../components/SupplierMap.vue";
-import SupplierFilters from "../components/SupplierFilters.vue";
+import ListaFornecedores from "../components/ListaFornecedores.vue";
+import MapaFornecedores from "../components/MapaFornecedores.vue";
+import FiltrosFornecedores from "../components/FiltrosFornecedores.vue";
 import type { Fornecedor } from "../types/fornecedores";
 import { useFornecedorService } from "../composables/useFornecedorService";
-import { mapFornecedorToSupplier } from "../utils/supplierMapper";
 import { useListFilter } from "../../../composables/ui/useListFilter";
 
 const { fetchFornecedor } = useFornecedorService();
@@ -204,18 +208,20 @@ const mapStatusFilter = (filter: string): Fornecedor["status"] | null => {
 
 const filterConfig = computed(() => ({
   searchFields: ["fornecedor", "fanta", "cidade"] as (keyof Fornecedor)[],
-  
+
   customFilters: (s: Fornecedor) => {
     const f = filters.value;
-    
-    const matchFantasia = !f.fantasia || 
+
+    const matchFantasia =
+      !f.fantasia ||
       (s.fanta ?? "").toLowerCase().includes(f.fantasia.toLowerCase());
-      
-    const matchCidade = !f.cidade || 
-      s.cidade.toLowerCase().includes(f.cidade.toLowerCase());
+
+    const matchCidade =
+      !f.cidade || s.cidade.toLowerCase().includes(f.cidade.toLowerCase());
 
     const statusTarget = mapStatusFilter(f.status);
-    const matchStatus = f.status === "todos" || s.status === statusTarget;
+    const itemStatus = (s.status || "").trim().toLowerCase();
+    const matchStatus = f.status === "todos" || itemStatus === statusTarget;
 
     return matchFantasia && matchCidade && matchStatus;
   },
@@ -224,7 +230,7 @@ const filterConfig = computed(() => ({
     const sortBy = filters.value.sortBy;
     if (sortBy === "cidade") {
       return a.cidade.localeCompare(b.cidade);
-    } 
+    }
     if (sortBy === "status") {
       const normalizar = (status: string) => status.trim().toLowerCase();
       const order: Record<string, number> = {
@@ -232,10 +238,13 @@ const filterConfig = computed(() => ({
         alerta: 2,
         inativo: 3,
       };
-      return (order[normalizar(a.status)] ?? 99) - (order[normalizar(b.status)] ?? 99);
+      return (
+        (order[normalizar(a.status)] ?? 99) -
+        (order[normalizar(b.status)] ?? 99)
+      );
     }
     return a.fornecedor.localeCompare(b.fornecedor);
-  }
+  },
 }));
 
 const { search, filteredItems: fornecedoresFiltrados } = useListFilter(
@@ -243,8 +252,19 @@ const { search, filteredItems: fornecedoresFiltrados } = useListFilter(
   filterConfig
 );
 
-const filteredSuppliers = computed(() =>
-  fornecedoresFiltrados.value.map(mapFornecedorToSupplier)
-);
+// --- Modal Integration ---
+// --- Modal Integration ---
+import ModalDetalhesParceiro from "../../painel/components/ModalDetalhesParceiro.vue";
 
+const showModal = ref(false);
+const selectedFornecedor = ref<any>(null);
+
+const handleSelectFornecedor = (fornecedor: Fornecedor) => {
+  // Map Fornecedor to the shape expected by the modal
+  selectedFornecedor.value = {
+    ...fornecedor,
+    name: fornecedor.fornecedor, // Modal expects 'name'
+  };
+  showModal.value = true;
+};
 </script>
