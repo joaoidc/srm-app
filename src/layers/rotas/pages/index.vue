@@ -36,48 +36,36 @@
       <div class="col-span-4 text-end">Ações</div>
     </div>
 
-    <div class="flex flex-col gap-2 md:gap-0">
+    <div class="flex flex-col gap-1.5 md:gap-0">
       <div
-        v-for="route in routes"
+        v-for="route in paginatedRoutes"
         :key="route.id"
-        class="group/item relative bg-[var(--color-surface)] md:rounded-none first:md:rounded-t-none last:md:rounded-b-lg rounded-xl border border-transparent md:border-[var(--color-border)] md:border-t-0 first:md:border-t hover:border-[var(--color-primary-border)] hover:bg-[var(--color-primary-soft)] transition-all duration-300 ease-out hover:shadow-sm px-4 py-3 md:px-6 md:py-3 cursor-pointer"
+        class="group/item relative bg-[var(--color-surface)] md:rounded-none first:md:rounded-t-none last:md:rounded-b-lg rounded-lg border border-[var(--color-border-subtle)] md:border-[var(--color-border)] md:border-t-0 first:md:border-t hover:border-[var(--color-primary-border)] hover:bg-[var(--color-primary-soft)] transition-all duration-300 ease-out hover:shadow-sm px-3 py-2.5 md:px-6 md:py-3 cursor-pointer"
       >
         <div
           class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-0 bg-[var(--color-primary)] rounded-r-full opacity-0 group-hover/item:h-6 group-hover/item:opacity-100 transition-all duration-300"
         ></div>
 
-        <div
-          class="flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-4 items-center"
-        >
-          <div class="col-span-6 flex items-center gap-3 w-full">
+        <div class="flex md:grid md:grid-cols-12 gap-2.5 md:gap-4 items-center">
+          <div class="col-span-6 flex items-center gap-2.5 md:gap-3 flex-1 min-w-0">
             <div
-              class="flex-shrink-0 w-9 h-9 rounded-full bg-[var(--color-primary-soft)] flex items-center justify-center text-[var(--color-primary)] group-hover/item:scale-105 transition-transform duration-200"
+              class="flex-shrink-0 w-8 h-8 md:w-9 md:h-9 rounded-full bg-[var(--color-primary-soft)] flex items-center justify-center text-[var(--color-primary)] group-hover/item:scale-105 transition-transform duration-200"
             >
-              <RouteIcon class="w-4 h-4" />
+              <RouteIcon class="w-3.5 h-3.5 md:w-4 md:h-4" />
             </div>
-            <div class="flex flex-col gap-0.5">
+            <div class="flex flex-col min-w-0">
               <span
-                class="font-semibold text-[var(--color-text)] text-sm group-hover/item:text-[var(--color-primary)] transition-colors"
+                class="font-semibold text-[var(--color-text)] text-sm group-hover/item:text-[var(--color-primary)] transition-colors truncate"
               >
                 {{ route.name }}
               </span>
-              <div
-                class="flex items-center gap-2 text-xs text-[var(--color-text-muted)]"
-              >
-                <span>{{ route.dateRange }}</span>
-                <span
-                  class="w-1 h-1 rounded-full bg-[var(--color-text-muted)] opacity-50"
-                ></span>
-                <span
-                  >{{ route.suppliersCount }} fornecedor{{
-                    route.suppliersCount !== 1 ? "es" : ""
-                  }}</span
-                >
-              </div>
+              <span class="text-[11px] text-[var(--color-text-muted)] truncate">
+                {{ route.dateRange }} · {{ route.suppliersCount }} fornecedor{{ route.suppliersCount !== 1 ? "es" : "" }}
+              </span>
             </div>
           </div>
 
-          <div class="col-span-2 w-full md:w-auto flex md:justify-center">
+          <div class="hidden md:flex col-span-2 justify-center">
             <UiBadge
               :variant="getStatusVariant(route.status)"
               :dot="true"
@@ -87,22 +75,31 @@
             </UiBadge>
           </div>
 
-          <div
-            class="col-span-4 w-full md:w-auto flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2"
-          >
-            <UiButton variant="primary" size="small" class="w-full md:w-auto">
+          <div class="col-span-4 flex items-center justify-end gap-1.5 md:gap-2">
+            <UiButton variant="primary" size="small" class="hidden md:flex">
               <Plus class="w-3 h-3" />
               Adição rápida
             </UiButton>
 
-            <UiButton variant="secondary" size="small" class="w-full md:w-auto">
-              <Eye class="w-3 h-3" />
-              Detalhes
+            <UiButton variant="ghost" size="small" class="!px-1.5 !py-1.5 md:!px-2 md:hidden">
+              <Plus class="w-4 h-4" />
+            </UiButton>
+
+            <UiButton variant="ghost" size="small" class="!px-1.5 !py-1.5 md:!px-2">
+              <Eye class="w-4 h-4" />
+              <span class="hidden md:inline">Detalhes</span>
             </UiButton>
           </div>
         </div>
       </div>
     </div>
+
+    <UiPaginacao
+      v-if="routes.length > 0"
+      v-model:current-page="currentPage"
+      :total-pages="totalPages"
+      class="mt-6"
+    />
 
     <UiEmptyState
       v-if="routes.length === 0"
@@ -125,12 +122,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { Plus, Eye, Route as RouteIcon } from "lucide-vue-next";
 import UiButton from "@/components/ui/buttons/UiButton.vue";
 import UiBadge from "@/components/ui/data-display/UiBadge.vue";
 import UiEmptyState from "@/components/ui/feedback/UiEmptyState.vue";
 import UiCalendario from "@/components/ui/forms/UiCalendario.vue";
+import UiPaginacao from "@/components/ui/navigation/UiPaginacao.vue";
 import ModalNovaRota from "../components/ModalNovaRota.vue";
 
 definePageMeta({
@@ -150,6 +148,8 @@ interface RouteItem {
 const showNovaRotaModal = ref(false);
 const filtroDataInicio = ref<Date | null>(null);
 const filtroDataFim = ref<Date | null>(null);
+const currentPage = ref(1);
+const itemsPerPage = 10;
 
 const routes = ref<RouteItem[]>([
   {
@@ -181,6 +181,14 @@ const routes = ref<RouteItem[]>([
     status: "pending",
   },
 ]);
+
+const totalPages = computed(() => Math.ceil(routes.value.length / itemsPerPage) || 1);
+
+const paginatedRoutes = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return routes.value.slice(start, end);
+});
 
 const getStatusLabel = (status: RouteStatus): string => {
   const map: Record<RouteStatus, string> = {

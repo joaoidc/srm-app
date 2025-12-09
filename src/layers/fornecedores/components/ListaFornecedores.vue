@@ -10,27 +10,31 @@
       <div class="col-span-2 text-end">Ações</div>
     </div>
 
-    <div class="space-y-2 md:space-y-0">
+    <div class="flex flex-col gap-1.5 md:gap-0">
       <div
         v-for="fornecedor in fornecedores"
         :key="fornecedor.codfor"
-        class="group bg-[var(--color-surface)] md:rounded-none first:md:rounded-t-none last:md:rounded-b-lg rounded-lg border border-[var(--color-border)] md:border-t-0 first:md:border-t transition-all duration-200 px-4 py-3 md:px-5 md:py-2.5 hover:bg-[var(--color-hover)] cursor-pointer"
+        class="group/item relative bg-[var(--color-surface)] md:rounded-none first:md:rounded-t-none last:md:rounded-b-lg rounded-lg border border-[var(--color-border-subtle)] md:border-[var(--color-border)] md:border-t-0 first:md:border-t hover:border-[var(--color-primary-border)] hover:bg-[var(--color-primary-soft)] transition-all duration-300 ease-out hover:shadow-sm px-3 py-2.5 md:px-5 md:py-2.5 cursor-pointer"
         @click="$emit('select', fornecedor)"
       >
-        <div class="flex flex-col md:grid md:grid-cols-12 gap-3 md:gap-4 items-center">
-          <div class="col-span-4 flex items-center gap-3 w-full">
+        <div
+          class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-0 bg-[var(--color-primary)] rounded-r-full opacity-0 group-hover/item:h-6 group-hover/item:opacity-100 transition-all duration-300"
+        ></div>
+
+        <div class="flex md:grid md:grid-cols-12 gap-2.5 md:gap-4 items-center">
+          <div class="col-span-4 flex items-center gap-2.5 md:gap-3 flex-1 min-w-0">
             <div
-              class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center group-hover:scale-105 transition-transform duration-200"
+              class="flex-shrink-0 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center group-hover/item:scale-105 transition-transform duration-200"
               :class="getIconClass(fornecedor.status)"
             >
-              <Building2 class="w-4 h-4" />
+              <Building2 class="w-3.5 h-3.5 md:w-4 md:h-4" />
             </div>
-            <div class="flex flex-col gap-0.5">
-              <span class="font-semibold text-[var(--color-text)] text-sm">
+            <div class="flex flex-col min-w-0">
+              <span class="font-semibold text-[var(--color-text)] text-sm group-hover/item:text-[var(--color-primary)] transition-colors truncate">
                 {{ fornecedor.fornecedor }}
               </span>
-              <span class="text-xs text-[var(--color-text-muted)]">
-                {{ fornecedor.fanta }}
+              <span class="text-[11px] text-[var(--color-text-muted)] truncate">
+                {{ fornecedor.fanta || fornecedor.cidade }}
               </span>
             </div>
           </div>
@@ -47,7 +51,7 @@
             </span>
           </div>
 
-          <div class="col-span-2 w-full md:w-auto flex md:justify-center">
+          <div class="hidden md:flex col-span-2 justify-center">
             <UiBadge
               v-if="fornecedor.status"
               :variant="getStatusVariant(fornecedor.status)"
@@ -58,11 +62,11 @@
             </UiBadge>
           </div>
 
-          <div class="col-span-2 w-full md:w-auto flex flex-col md:flex-row items-stretch md:items-center justify-end gap-2">
+          <div class="col-span-2 flex items-center justify-end gap-1.5 md:gap-2">
             <UiButton
               variant="primary"
               size="small"
-              class="w-full md:w-auto"
+              class="hidden md:flex"
               @click.stop="$emit('add-route', fornecedor)"
             >
               <MapPin class="w-3 h-3" />
@@ -70,21 +74,22 @@
             </UiButton>
 
             <UiButton
-              variant="secondary"
+              variant="ghost"
               size="small"
-              class="w-full md:w-auto"
+              class="!px-1.5 !py-1.5 md:!px-2 md:hidden"
+              @click.stop="$emit('add-route', fornecedor)"
+            >
+              <MapPin class="w-4 h-4" />
+            </UiButton>
+
+            <UiButton
+              variant="ghost"
+              size="small"
+              class="!px-1.5 !py-1.5 md:!px-2"
               @click.stop
             >
-              <MessageSquareText class="w-3 h-3" />
+              <MessageSquareText class="w-4 h-4" />
             </UiButton>
-          </div>
-
-          <div class="flex md:hidden w-full items-center justify-between text-xs text-[var(--color-text-muted)] pt-2 border-t border-[var(--color-border-subtle)]">
-            <div class="flex items-center gap-2">
-              <span>{{ fornecedor.cidade }}</span>
-              <span class="w-1 h-1 rounded-full bg-[var(--color-text-muted)] opacity-50"></span>
-              <span>{{ fornecedor.ultima_carga }}</span>
-            </div>
           </div>
         </div>
       </div>

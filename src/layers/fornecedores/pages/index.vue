@@ -118,39 +118,15 @@
             {{ fornecedoresFiltrados.length }} resultados
           </div>
           <ListaFornecedores
-            :fornecedores="fornecedoresFiltrados"
+            :fornecedores="paginatedFornecedores"
             @select="handleSelectFornecedor"
           />
 
-          <!-- Pagination Placeholder -->
-          <div class="mt-6 flex justify-center gap-2">
-            <button
-              class="w-8 h-8 flex items-center justify-center rounded-lg border transition-colors"
-              style="
-                background-color: var(--color-surface);
-                border-color: var(--color-border);
-                color: var(--color-text-muted);
-              "
-            >
-              <ChevronLeft class="w-4 h-4" />
-            </button>
-            <button
-              class="w-8 h-8 flex items-center justify-center rounded-lg font-bold"
-              style="background-color: var(--color-primary); color: #fff"
-            >
-              1
-            </button>
-            <button
-              class="w-8 h-8 flex items-center justify-center rounded-lg border transition-colors"
-              style="
-                background-color: var(--color-surface);
-                border-color: var(--color-border);
-                color: var(--color-text-muted);
-              "
-            >
-              <ChevronRight class="w-4 h-4" />
-            </button>
-          </div>
+          <UiPaginacao
+            v-model:current-page="currentPage"
+            :total-pages="totalPages"
+            class="mt-6"
+          />
         </div>
 
         <div v-else>
@@ -165,18 +141,12 @@
 
 <script setup lang="ts">
 import { ref, computed } from "vue";
-import {
-  Search,
-  Filter,
-  List,
-  Map,
-  ChevronLeft,
-  ChevronRight,
-} from "lucide-vue-next";
+import { Search, Filter, List, Map } from "lucide-vue-next";
 import ListaFornecedores from "../components/ListaFornecedores.vue";
 import MapaFornecedores from "../components/MapaFornecedores.vue";
 import FiltrosFornecedores from "../components/FiltrosFornecedores.vue";
 import UiSpinner from "../../../components/ui/feedback/UiSpinner.vue";
+import UiPaginacao from "@/components/ui/navigation/UiPaginacao.vue";
 import type { Fornecedor } from "../types/fornecedores";
 import { useFornecedorService } from "../composables/useFornecedorService";
 import { useListFilter } from "../../../composables/ui/useListFilter";
@@ -187,6 +157,8 @@ const { data: fornecedores, status } = fetchFornecedor();
 const isLoading = computed(() => status.value === "pending");
 const showFilters = ref(false);
 const viewMode = ref<"list" | "map">("list");
+const currentPage = ref(1);
+const itemsPerPage = 10;
 
 const filters = ref({
   fantasia: "",
@@ -260,6 +232,14 @@ const { search, filteredItems: fornecedoresFiltrados } = useListFilter(
   listaFornecedores,
   filterConfig
 );
+
+const totalPages = computed(() => Math.ceil(fornecedoresFiltrados.value.length / itemsPerPage) || 1);
+
+const paginatedFornecedores = computed(() => {
+  const start = (currentPage.value - 1) * itemsPerPage;
+  const end = start + itemsPerPage;
+  return fornecedoresFiltrados.value.slice(start, end);
+});
 
 // --- Modal Integration ---
 import ModalDetalhesParceiro from "../../painel/components/ModalDetalhesParceiro.vue";
