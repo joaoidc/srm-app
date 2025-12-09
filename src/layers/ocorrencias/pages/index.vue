@@ -92,53 +92,74 @@
       <div
         v-for="item in ocorrenciasFiltradas"
         :key="item.id"
-        class="group/item relative bg-[var(--color-surface)] md:rounded-none first:md:rounded-t-none last:md:rounded-b-lg rounded-lg border border-[var(--color-border-subtle)] md:border-[var(--color-border)] md:border-t-0 first:md:border-t hover:border-[var(--color-primary-border)] hover:bg-[var(--color-primary-soft)] transition-all duration-300 ease-out hover:shadow-sm px-3 py-2.5 md:px-6 md:py-3 cursor-pointer"
+        class="group/item relative bg-[var(--color-surface)] md:rounded-none first:md:rounded-t-none last:md:rounded-b-lg rounded-lg border border-[var(--color-border-subtle)] md:border-[var(--color-border)] md:border-t-0 first:md:border-t hover:border-[var(--color-primary-border)] hover:bg-[var(--color-primary-soft)] transition-all duration-300 ease-out hover:shadow-sm px-3 py-3 md:px-6 md:py-3 cursor-pointer"
         @click="abrirDetalhes(item)"
       >
         <div
           class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-0 bg-[var(--color-primary)] rounded-r-full opacity-0 group-hover/item:h-6 group-hover/item:opacity-100 transition-all duration-300"
         ></div>
 
-        <div class="flex md:grid md:grid-cols-12 gap-2.5 md:gap-4 items-center">
-          <div class="col-span-4 flex items-center gap-2.5 md:gap-3 flex-1 min-w-0">
+        <div class="hidden md:grid md:grid-cols-12 gap-4 items-center">
+          <div class="col-span-4 flex items-center gap-3">
             <div
-              class="flex-shrink-0 w-8 h-8 md:w-9 md:h-9 rounded-full flex items-center justify-center group-hover/item:scale-105 transition-transform duration-200"
+              class="flex-shrink-0 w-9 h-9 rounded-full flex items-center justify-center group-hover/item:scale-105 transition-transform duration-200"
               :class="getStatusIconClass(item.status)"
             >
-              <MessageSquare class="w-3.5 h-3.5 md:w-4 md:h-4" />
+              <MessageSquare class="w-4 h-4" />
             </div>
             <div class="flex flex-col min-w-0">
               <span class="font-semibold text-[var(--color-text)] text-sm group-hover/item:text-[var(--color-primary)] transition-colors truncate">
                 {{ item.titulo || "Sem descrição" }}
               </span>
-              <span class="text-[11px] text-[var(--color-text-muted)] truncate md:hidden">
-                {{ item.fornecedor }} · {{ item.dataCadastro || "Sem data" }}
-              </span>
             </div>
           </div>
 
-          <div class="hidden md:flex col-span-3 items-center">
+          <div class="col-span-3 flex items-center">
             <span class="text-sm text-[var(--color-text-muted)]">
               {{ item.fornecedor }}
             </span>
           </div>
 
-          <div class="hidden md:flex col-span-2 items-center justify-center">
+          <div class="col-span-2 flex items-center justify-center">
             <span class="text-sm text-[var(--color-text-muted)]">
               {{ item.dataCadastro || "—" }}
             </span>
           </div>
 
-          <div class="hidden md:flex col-span-2 items-center justify-center">
+          <div class="col-span-2 flex items-center justify-center">
             <span class="text-sm text-[var(--color-text-muted)]">
               {{ item.atendente }}
             </span>
           </div>
 
-          <div class="col-span-1 flex items-center justify-end" @click.stop>
-            <UiButton variant="ghost" size="small" class="!px-1.5 !py-1.5 md:!px-2" @click="abrirDetalhes(item)">
+          <div class="col-span-1 flex items-center justify-end">
+            <UiButton variant="ghost" size="small" class="!px-2">
               <Eye class="w-4 h-4" />
             </UiButton>
+          </div>
+        </div>
+
+        <div class="flex md:hidden flex-col gap-1">
+          <div class="flex items-start justify-between gap-3">
+            <div class="flex items-center gap-2.5 min-w-0 flex-1">
+              <div
+                class="flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center"
+                :class="getStatusIconClass(item.status)"
+              >
+                <MessageSquare class="w-3.5 h-3.5" />
+              </div>
+              <span class="font-semibold text-[var(--color-text)] text-sm group-hover/item:text-[var(--color-primary)] transition-colors truncate">
+                {{ item.fornecedor }}
+              </span>
+            </div>
+            <span class="text-[11px] text-[var(--color-text-muted)] whitespace-nowrap flex-shrink-0">
+              {{ item.dataCadastro || "Sem data" }}
+            </span>
+          </div>
+          <div class="pl-10">
+            <span class="text-[11px] text-[var(--color-text-muted)] line-clamp-1">
+              {{ item.titulo || "Sem descrição" }}
+            </span>
           </div>
         </div>
       </div>
