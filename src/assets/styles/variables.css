@@ -21,6 +21,18 @@
   --color-status-acompanhamento: #fbbf24;
   --color-status-pendente: #f87171;
   --color-status-vencido: #ef4444;
+
+  /* Semantic Colors */
+  --color-success: #10b981;
+  --color-success-soft: rgba(16, 185, 129, 0.1);
+  --color-warning: #f59e0b;
+  --color-warning-soft: rgba(245, 158, 11, 0.1);
+  --color-danger: #ef4444;
+  --color-danger-soft: rgba(239, 68, 68, 0.1);
+
+  /* Interactive */
+  --color-primary-soft: rgba(0, 153, 255, 0.1);
+  --color-primary-border: rgba(0, 153, 255, 0.3);
 }
 
 [data-theme="light"] {
@@ -31,6 +43,18 @@
   --color-border: #e0e0e0;
   --color-border-subtle: rgba(0, 0, 0, 0.08);
   --color-hover: rgba(0, 0, 0, 0.05);
+
+  /* Semantic Colors - Light */
+  --color-success: #10b981;
+  --color-success-soft: rgba(16, 185, 129, 0.1);
+  --color-warning: #f59e0b;
+  --color-warning-soft: rgba(245, 158, 11, 0.1);
+  --color-danger: #ef4444;
+  --color-danger-soft: rgba(239, 68, 68, 0.1);
+
+  /* Interactive - Light */
+  --color-primary-soft: rgba(0, 153, 255, 0.05);
+  --color-primary-border: rgba(0, 153, 255, 0.3);
 }
 
 html,

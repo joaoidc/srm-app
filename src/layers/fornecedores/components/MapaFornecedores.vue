@@ -11,7 +11,7 @@
 import { ref, watch, onMounted, onUnmounted } from "vue";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import type { Fornecedor } from "../types/fornecedores";
+import type { Fornecedor, FornecedorMapItem } from "../types/fornecedores";
 
 const MAP_CENTER: [number, number] = [-15.7801, -47.9292];
 const INITIAL_ZOOM = 4;
@@ -27,7 +27,7 @@ const STATUS_CONFIG = {
 
 // --- Props ---
 const props = defineProps<{
-  fornecedores?: Fornecedor[];
+  fornecedores?: FornecedorMapItem[];
 }>();
 
 // --- State ---
@@ -36,11 +36,11 @@ let map: L.Map | null = null;
 let markers: L.Marker[] = [];
 
 // --- Helpers ---
-const getStatusConfig = (status: Fornecedor["status"]) => {
+const getStatusConfig = (status: FornecedorMapItem["status"]) => {
   return STATUS_CONFIG[status] || STATUS_CONFIG.inativo;
 };
 
-const createCustomIcon = (status: Fornecedor["status"]) => {
+const createCustomIcon = (status: FornecedorMapItem["status"]) => {
   const { color } = getStatusConfig(status);
   const html = `
     <div style="
@@ -62,7 +62,7 @@ const createCustomIcon = (status: Fornecedor["status"]) => {
   });
 };
 
-const createPopupContent = (fornecedor: Fornecedor) => {
+const createPopupContent = (fornecedor: FornecedorMapItem) => {
   const { color, label } = getStatusConfig(fornecedor.status);
 
   return `
@@ -87,7 +87,7 @@ const clearMarkers = () => {
   markers = [];
 };
 
-const addMarker = (fornecedor: Fornecedor) => {
+const addMarker = (fornecedor: FornecedorMapItem) => {
   if (!fornecedor.latitude || !fornecedor.longitude) return null;
 
   const marker = L.marker(

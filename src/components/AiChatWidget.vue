@@ -1,5 +1,8 @@
 <template>
-  <div class="fixed bottom-6 right-6 flex flex-col items-end" style="z-index: 9999;">
+  <div
+    class="fixed bottom-6 right-6 flex flex-col items-end"
+    style="z-index: 9999"
+  >
     <!-- Chat Window -->
     <Transition name="slide-up">
       <div
@@ -46,7 +49,9 @@
             class="p-1.5 rounded-lg transition-colors"
             style="color: var(--color-text-muted)"
             :style="{ '&:hover': { backgroundColor: 'var(--color-hover)' } }"
-            @mouseenter="$event.target.style.backgroundColor = 'var(--color-hover)'"
+            @mouseenter="
+              $event.target.style.backgroundColor = 'var(--color-hover)'
+            "
             @mouseleave="$event.target.style.backgroundColor = 'transparent'"
           >
             <X :size="18" />
@@ -63,11 +68,7 @@
           >
             <div
               class="max-w-[80%] p-3 rounded-2xl text-sm"
-              :class="
-                msg.isUser
-                  ? 'rounded-tr-sm'
-                  : 'rounded-tl-sm'
-              "
+              :class="msg.isUser ? 'rounded-tr-sm' : 'rounded-tl-sm'"
               :style="
                 msg.isUser
                   ? 'background-color: var(--color-primary); color: white;'
@@ -91,15 +92,24 @@
             >
               <span
                 class="w-2 h-2 rounded-full animate-bounce"
-                style="background-color: var(--color-text-muted); animation-delay: 0ms"
+                style="
+                  background-color: var(--color-text-muted);
+                  animation-delay: 0ms;
+                "
               ></span>
               <span
                 class="w-2 h-2 rounded-full animate-bounce"
-                style="background-color: var(--color-text-muted); animation-delay: 150ms"
+                style="
+                  background-color: var(--color-text-muted);
+                  animation-delay: 150ms;
+                "
               ></span>
               <span
                 class="w-2 h-2 rounded-full animate-bounce"
-                style="background-color: var(--color-text-muted); animation-delay: 300ms"
+                style="
+                  background-color: var(--color-text-muted);
+                  animation-delay: 300ms;
+                "
               ></span>
             </div>
           </div>
@@ -128,8 +138,12 @@
               :disabled="!newMessage.trim()"
               class="p-2 rounded-lg transition-all disabled:opacity-40"
               :style="{
-                color: newMessage.trim() ? 'var(--color-primary)' : 'var(--color-text-muted)',
-                backgroundColor: newMessage.trim() ? 'rgba(0, 153, 255, 0.1)' : 'transparent',
+                color: newMessage.trim()
+                  ? 'var(--color-primary)'
+                  : 'var(--color-text-muted)',
+                backgroundColor: newMessage.trim()
+                  ? 'rgba(0, 153, 255, 0.1)'
+                  : 'transparent',
               }"
             >
               <Send :size="18" />
@@ -143,9 +157,7 @@
     <button
       @click="toggleChat"
       class="group relative w-14 h-14 rounded-xl shadow-lg flex items-center justify-center transition-all duration-300 hover:shadow-2xl active:scale-95"
-      :class="[
-        hasUnreadMessages && !isOpen ? 'animate-pulse-slow' : '',
-      ]"
+      :class="[hasUnreadMessages && !isOpen ? 'animate-pulse-slow' : '']"
       style="
         background-color: var(--color-primary);
         border: 1px solid var(--color-border);
@@ -164,7 +176,9 @@
       ></div>
 
       <!-- AI Icon with Sparkler Image -->
-      <div class="relative z-10 flex items-center justify-center w-full h-full p-3">
+      <div
+        class="relative z-10 flex items-center justify-center w-full h-full p-3"
+      >
         <img
           src="~/assets/sparkler.png"
           alt="AI Assistant"
@@ -195,7 +209,9 @@ const hasUnreadMessages = ref(false);
 const lastReadMessageIndex = ref(0);
 const hasInitialized = ref(false);
 
-const messages = ref<Array<{text: string; isUser: boolean; time: string}>>([]);
+const messages = ref<Array<{ text: string; isUser: boolean; time: string }>>(
+  []
+);
 
 const scrollToBottom = async () => {
   await nextTick();
@@ -207,12 +223,9 @@ const scrollToBottom = async () => {
 const toggleChat = async () => {
   isOpen.value = !isOpen.value;
   if (isOpen.value) {
-    // Send initial message only on first open
     if (!hasInitialized.value) {
       hasInitialized.value = true;
       await nextTick();
-
-      // Simulate typing for initial message
       isTyping.value = true;
       await scrollToBottom();
 
@@ -230,7 +243,6 @@ const toggleChat = async () => {
       }, 800);
     }
 
-    // Mark all messages as read when opening chat
     hasUnreadMessages.value = false;
     lastReadMessageIndex.value = messages.value.length;
   }
@@ -239,7 +251,6 @@ const toggleChat = async () => {
 const sendMessage = async () => {
   if (!newMessage.value.trim()) return;
 
-  // Add user message
   messages.value.push({
     text: newMessage.value,
     isUser: true,
@@ -268,7 +279,6 @@ const sendMessage = async () => {
     });
     await scrollToBottom();
 
-    // If chat is closed, mark as unread
     if (!isOpen.value) {
       hasUnreadMessages.value = true;
     } else {
@@ -280,7 +290,6 @@ const sendMessage = async () => {
 watch(isOpen, (val) => {
   if (val) {
     scrollToBottom();
-    // Mark all messages as read
     hasUnreadMessages.value = false;
     lastReadMessageIndex.value = messages.value.length;
   }
@@ -288,7 +297,6 @@ watch(isOpen, (val) => {
 </script>
 
 <style scoped>
-/* Modal Transitions */
 .slide-up-enter-active {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }

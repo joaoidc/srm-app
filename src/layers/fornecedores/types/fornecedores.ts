@@ -23,6 +23,18 @@ export interface Fornecedor {
   latlong: boolean;
 }
 
+export type FornecedorMapItem = Pick<
+  Fornecedor,
+  | "fornecedor"
+  | "cidade"
+  | "ultima_carga"
+  | "status"
+  | "latitude"
+  | "longitude"
+  | "latlong"
+  | "fanta"
+>;
+
 export interface FornecedorResponse extends ApiResponse<Fornecedor[]> {
   data: Fornecedor[];
 }
