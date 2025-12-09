@@ -327,7 +327,11 @@
                       class="hidden sm:block w-0.5 h-0.5 rounded-full bg-gray-300 dark:bg-gray-600"
                     ></span>
                     <span
-                      class="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400 border border-gray-200 dark:border-gray-700"
+                      class="text-[10px] px-1.5 py-0.5 rounded-full bg-gray-100 dark:bg-gray-800 border"
+                      :style="{
+                        color: item.status === 'Ativo' ? 'var(--color-status-finalizado)' : 'var(--color-status-vencido)',
+                        borderColor: item.status === 'Ativo' ? 'var(--color-status-finalizado)' : 'var(--color-status-vencido)'
+                      }"
                     >
                       {{ item.status }}
                     </span>
@@ -335,7 +339,7 @@
 
                   <template #action>
                     <button
-                      class="p-1.5 hover:bg-white dark:hover:bg-gray-800 text-primary rounded-full shadow-sm"
+                      class="p-1.5 rounded-full shadow-sm transition-colors text-[var(--color-text-muted)] group-hover/item:text-[var(--color-primary)] hover:bg-[var(--color-hover)]"
                       title="Enviar felicitações"
                     >
                       <Gift class="w-3.5 h-3.5" />
@@ -734,7 +738,7 @@ const initCharts = () => {
         axisPointer: { type: "shadow" },
         ...premiumTooltipStyle,
         formatter: (params: any) =>
-          getPremiumTooltip(params, params[0].name, formatarMoeda),
+          getPremiumTooltip(params, params[0].name, formatarKg),
       },
       legend: {
         bottom: 0,
