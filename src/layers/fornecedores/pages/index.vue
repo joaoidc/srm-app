@@ -103,51 +103,59 @@
 
     <!-- Content -->
     <div>
-      <div v-if="viewMode === 'list'">
-        <div
-          class="mb-4 font-semibold text-sm"
-          style="color: var(--color-primary)"
-        >
-          {{ fornecedoresFiltrados.length }} resultados
-        </div>
-        <ListaFornecedores
-          :fornecedores="fornecedoresFiltrados"
-          @select="handleSelectFornecedor"
-        />
-
-        <!-- Pagination Placeholder -->
-        <div class="mt-6 flex justify-center gap-2">
-          <button
-            class="w-8 h-8 flex items-center justify-center rounded-lg border transition-colors"
-            style="
-              background-color: var(--color-surface);
-              border-color: var(--color-border);
-              color: var(--color-text-muted);
-            "
-          >
-            <ChevronLeft class="w-4 h-4" />
-          </button>
-          <button
-            class="w-8 h-8 flex items-center justify-center rounded-lg font-bold"
-            style="background-color: var(--color-primary); color: #fff"
-          >
-            1
-          </button>
-          <button
-            class="w-8 h-8 flex items-center justify-center rounded-lg border transition-colors"
-            style="
-              background-color: var(--color-surface);
-              border-color: var(--color-border);
-              color: var(--color-text-muted);
-            "
-          >
-            <ChevronRight class="w-4 h-4" />
-          </button>
-        </div>
+      <!-- Loading State -->
+      <div v-if="isLoading" class="flex flex-col items-center justify-center py-12">
+        <UiSpinner size="large" text="Carregando dados..." />
       </div>
 
+      <!-- Data View -->
       <div v-else>
-        <MapaFornecedores :fornecedores="fornecedoresFiltrados" />
+        <div v-if="viewMode === 'list'">
+          <div
+            class="mb-4 font-semibold text-sm"
+            style="color: var(--color-primary)"
+          >
+            {{ fornecedoresFiltrados.length }} resultados
+          </div>
+          <ListaFornecedores
+            :fornecedores="fornecedoresFiltrados"
+            @select="handleSelectFornecedor"
+          />
+
+          <!-- Pagination Placeholder -->
+          <div class="mt-6 flex justify-center gap-2">
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded-lg border transition-colors"
+              style="
+                background-color: var(--color-surface);
+                border-color: var(--color-border);
+                color: var(--color-text-muted);
+              "
+            >
+              <ChevronLeft class="w-4 h-4" />
+            </button>
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded-lg font-bold"
+              style="background-color: var(--color-primary); color: #fff"
+            >
+              1
+            </button>
+            <button
+              class="w-8 h-8 flex items-center justify-center rounded-lg border transition-colors"
+              style="
+                background-color: var(--color-surface);
+                border-color: var(--color-border);
+                color: var(--color-text-muted);
+              "
+            >
+              <ChevronRight class="w-4 h-4" />
+            </button>
+          </div>
+        </div>
+
+        <div v-else>
+          <MapaFornecedores :fornecedores="fornecedoresFiltrados" />
+        </div>
       </div>
     </div>
 
@@ -168,6 +176,7 @@ import {
 import ListaFornecedores from "../components/ListaFornecedores.vue";
 import MapaFornecedores from "../components/MapaFornecedores.vue";
 import FiltrosFornecedores from "../components/FiltrosFornecedores.vue";
+import UiSpinner from "../../../components/ui/feedback/UiSpinner.vue";
 import type { Fornecedor } from "../types/fornecedores";
 import { useFornecedorService } from "../composables/useFornecedorService";
 import { useListFilter } from "../../../composables/ui/useListFilter";

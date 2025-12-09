@@ -416,7 +416,6 @@ import DateBox from "@/components/ui/DateBox.vue";
 import UiMetricHero from "@/components/ui/data-display/UiMetricHero.vue";
 import UiMetricGrid from "@/components/ui/data-display/UiMetricGrid.vue";
 import UiEmptyState from "@/components/ui/feedback/UiEmptyState.vue";
-import UiChartLegend from "@/components/ui/data-display/UiChartLegend.vue";
 import UiStatusBadgeGroup from "@/components/ui/data-display/UiStatusBadgeGroup.vue";
 import ModalDetalhesParceiro from "../components/ModalDetalhesParceiro.vue";
 import {
