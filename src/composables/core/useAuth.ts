@@ -56,6 +56,8 @@ export const useAuth = () => {
     userEmail: computed(() => authStore.userEmail),
     userName: computed(() => authStore.userName),
     userRole: computed(() => authStore.userRole),
+    userPermissoes: computed(() => authStore.userPermissoes),
+    userParametros: computed(() => authStore.userParametros),
     loading: computed(() => authStore.loading),
     error: computed(() => authStore.error),
     initialized: computed(() => authStore.initialized),

@@ -5,6 +5,59 @@
 
 import { z } from 'zod'
 
+// ==================== PERMISSÕES E PARÂMETROS ====================
+
+/**
+ * Interface: Permissão do usuário
+ */
+export interface Permissao {
+  idfuncao: number
+  permissao: string
+  alias: string
+  acessoPermitido: boolean
+}
+
+/**
+ * Interface: Parâmetros do sistema
+ */
+export interface Parametros {
+  desc_pr2pr3_clifor: boolean
+  fretebal: boolean
+  hab_preco_nf: boolean
+  bloq_difc: boolean
+  bloq_pedc: boolean
+  tab_serc: boolean
+  tab_serc2: boolean
+  comp_pesos: boolean
+  ocultar_campos_tb_dif: boolean
+  mod_pgto_fav: boolean
+  hab_servicos_3_0: boolean
+  registro_preco_div_por_ende: boolean
+  valida_pre_fim_mes: boolean
+  entrar_desaprovado_tabdif: boolean
+  bloq_comp: boolean
+  comp_ini: number
+  aceita_conco: boolean
+  nao_mostrar_arquivados: boolean
+  nao_alt_comp_tabela: boolean
+  sen_efrete_bloq_ordem: boolean
+  hab_grupo_cont: boolean
+  obriga_email_for: boolean
+  obriga_categor_forne: boolean
+  [key: string]: boolean | number // Permite parâmetros adicionais
+}
+
+/**
+ * Interface: Empresa do usuário
+ */
+export interface Empresa {
+  cnpj: string
+  sistema: string
+  nome_empresa: string
+  nome_filial: string
+  versao: string
+}
+
 // ==================== ZOD SCHEMAS ====================
 
 /**
@@ -28,7 +81,20 @@ export const userSchema = z.object({
   token: z.string(),
   email: z.string().email(),
   usuario: z.string(),
-  role: z.string().optional().default('user')
+  role: z.string().optional().default('user'),
+  idempresa: z.string().optional(),
+  iduser: z.string().optional(),
+  setor: z.string().optional(),
+  nomefun: z.string().optional(),
+  empresa: z.string().optional(),
+  empresas: z.array(z.any()).optional(),
+  parametros: z.record(z.union([z.boolean(), z.number()])).optional(),
+  permissoes: z.array(z.object({
+    idfuncao: z.number(),
+    permissao: z.string(),
+    alias: z.string(),
+    acessoPermitido: z.boolean()
+  })).optional()
 }).passthrough() // Permite campos adicionais da API
 
 /**

@@ -81,6 +81,9 @@
             :items="atendimentosVencidos"
             :paginated="true"
             :page-size="6"
+            :empty-icon="AlertCircle"
+            empty-title="Nenhum atendimento vencido"
+            empty-description="Não existem atendimentos com data vencida"
           >
             <template #default="{ paginatedItems }">
               <div class="space-y-2">
@@ -140,6 +143,10 @@
             class="!h-[450px]"
             title="Ocorrências"
             subtitle="Dos últimos 12 meses por status"
+            :is-empty="isOcorrenciasPieEmpty"
+            :empty-icon="PieChart"
+            empty-title="Sem ocorrências"
+            empty-description="Não há ocorrências no período"
           >
             <template #action>
               <div class="flex flex-col items-end">
@@ -160,6 +167,10 @@
             class="!h-[450px]"
             title="Ocorrências"
             subtitle="Quantidade por mês nos últimos 6 meses"
+            :is-empty="isOcorrenciasLineEmpty"
+            :empty-icon="LineChart"
+            empty-title="Sem ocorrências"
+            empty-description="Não há ocorrências nos últimos 6 meses"
           >
             <div ref="lineChartRef" class="w-full h-full min-h-[250px]"></div>
           </DashboardWidget>
@@ -170,6 +181,10 @@
             class="h-[450px]"
             title="Meta diária"
             subtitle="Por KG"
+            :is-empty="isMetaDiariaEmpty"
+            :empty-icon="Target"
+            empty-title="Sem dados de meta"
+            empty-description="Não há dados de meta diária disponíveis"
           >
             <div ref="barChartRef" class="w-full h-full min-h-[250px]"></div>
           </DashboardWidget>
@@ -181,6 +196,9 @@
             :items="compradorItems"
             :paginated="true"
             :page-size="6"
+            :empty-icon="ShoppingCart"
+            empty-title="Nenhuma compra registrada"
+            empty-description="Não existem compras no período selecionado"
           >
             <template #default="{ paginatedItems }">
               <div class="-mx-6">
@@ -240,6 +258,10 @@
             class="!h-[520px]"
             title="Produtos mais comprados"
             subtitle="Comparativo Mensal"
+            :is-empty="isProdutosBarEmpty"
+            :empty-icon="Package"
+            empty-title="Sem produtos"
+            empty-description="Não há dados de produtos comprados"
           >
             <div
               ref="productChartRef"
@@ -251,6 +273,10 @@
             class="h-[520px]"
             title="Total de descontos"
             subtitle="Por KG"
+            :is-empty="isDescontosEmpty"
+            :empty-icon="Percent"
+            empty-title="Sem descontos"
+            empty-description="Não há dados de descontos disponíveis"
           >
             <div
               ref="discountChartRef"
@@ -267,6 +293,9 @@
             :items="aniversariantesItems"
             :paginated="true"
             :page-size="6"
+            :empty-icon="Cake"
+            empty-title="Nenhum aniversariante"
+            empty-description="Não há aniversariantes próximos"
           >
             <template #default="{ paginatedItems }">
               <div class="space-y-2">
@@ -322,6 +351,9 @@
             :items="atendentesItems"
             :paginated="true"
             :page-size="6"
+            :empty-icon="Users"
+            empty-title="Nenhum atendente"
+            empty-description="Não há dados de atendentes disponíveis"
           >
             <template #default="{ paginatedItems }">
               <div class="space-y-3">
@@ -365,6 +397,15 @@ import {
   CheckSquare,
   DollarSign,
   Gift,
+  AlertCircle,
+  ShoppingCart,
+  Cake,
+  Users,
+  PieChart,
+  LineChart,
+  Target,
+  Percent,
+  Package,
 } from "lucide-vue-next";
 import * as echarts from "echarts";
 import StatCard from "../components/StatCard.vue";
@@ -413,6 +454,11 @@ const {
   atendentesItems,
   chartData,
   atendimentosVencidos,
+  isOcorrenciasPieEmpty,
+  isOcorrenciasLineEmpty,
+  isMetaDiariaEmpty,
+  isDescontosEmpty,
+  isProdutosBarEmpty,
 } = storeToRefs(dashboardStore);
 
 const showParceiroModal = ref(false);

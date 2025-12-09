@@ -45,7 +45,29 @@
     <div
       class="px-6 py-2 relative flex-1 flex flex-col overflow-y-auto overflow-x-hidden custom-scrollbar"
     >
-      <slot :paginatedItems="paginatedItems" />
+      <!-- Empty State -->
+      <div
+        v-if="showEmptyState"
+        class="h-full flex flex-col items-center justify-center text-gray-500 dark:text-gray-500 py-8"
+      >
+        <div
+          class="w-12 h-12 rounded-full bg-gray-200 dark:bg-gray-800/50 flex items-center justify-center mb-3"
+        >
+          <component :is="emptyIcon" class="w-6 h-6 opacity-50" />
+        </div>
+        <p class="text-sm font-medium">{{ emptyTitle }}</p>
+        <p
+          v-if="emptyDescription"
+          class="text-xs text-gray-400 dark:text-gray-600"
+        >
+          {{ emptyDescription }}
+        </p>
+      </div>
+
+      <!-- Content -->
+      <template v-else>
+        <slot :paginatedItems="paginatedItems" />
+      </template>
     </div>
 
     <div
@@ -85,8 +107,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "vue";
-import { ChevronLeft, ChevronRight } from "lucide-vue-next";
+import { computed, ref, type Component } from "vue";
+import { ChevronLeft, ChevronRight, Inbox } from "lucide-vue-next";
 
 const props = withDefaults(
   defineProps<{
@@ -95,12 +117,31 @@ const props = withDefaults(
     items?: any[];
     pageSize?: number;
     paginated?: boolean;
+    isEmpty?: boolean;
+    emptyIcon?: Component;
+    emptyTitle?: string;
+    emptyDescription?: string;
   }>(),
   {
     pageSize: 6,
     paginated: false,
+    isEmpty: false,
+    emptyTitle: "Nenhum resultado",
+    emptyDescription: "Não há dados para exibir",
   }
 );
+
+const emptyIcon = computed(() => props.emptyIcon || Inbox);
+
+const showEmptyState = computed(() => {
+  // Para widgets com controle externo (gráficos)
+  if (props.isEmpty) return true;
+  // Para widgets paginados
+  if (props.paginated) {
+    return !props.items || props.items.length === 0;
+  }
+  return false;
+});
 
 const currentPage = ref(1);
 

@@ -31,11 +31,23 @@ export const useDashboardStore = defineStore("dashboard", () => {
   // ==================== COMPUTED ====================
 
   // 1. Indicadores (Cards do Topo)
+  const defaultStats: StatItem[] = [
+    { label: "Fornecedores", value: 0, icon: "Building2", color: "bg-primary" },
+    { label: "Prospectos", value: 0, icon: "UserPlus", color: "bg-primary" },
+    { label: "Ativos", value: 0, icon: "CheckCircle", color: "bg-primary" },
+    { label: "Inativos", value: 0, icon: "XCircle", color: "bg-primary" },
+    { label: "Atendimentos", value: 0, icon: "MessageSquare", color: "bg-primary" },
+    { label: "Vencidos", value: 0, icon: "AlertTriangle", color: "bg-primary" },
+    { label: "Agendados", value: 0, icon: "Calendar", color: "bg-primary" },
+  ];
+
   const stats = computed<StatItem[]>(() => {
     const items = rawData.value?.indicadoresDashboard?.data ?? [];
+    if (items.length === 0) return defaultStats;
+
     return items.map((item: DashboardCount) => ({
       label: formatarLabel(item.tipo),
-      value: item.count,
+      value: item.count ?? 0,
       icon: mapIcon(item.tipo),
       color: "bg-primary",
     }));
@@ -137,6 +149,33 @@ export const useDashboardStore = defineStore("dashboard", () => {
     return data;
   });
 
+  // 5. Verificações de dados vazios para gráficos
+  const isOcorrenciasPieEmpty = computed(() => {
+    return chartData.value.ocorrenciasPie.length === 0 ||
+      chartData.value.ocorrenciasPie.every((item) => item.value === 0);
+  });
+
+  const isOcorrenciasLineEmpty = computed(() => {
+    return chartData.value.ocorrenciasLine.values.length === 0 ||
+      chartData.value.ocorrenciasLine.values.every((v) => v === 0);
+  });
+
+  const isMetaDiariaEmpty = computed(() => {
+    return chartData.value.metaDiaria.values.length === 0 ||
+      chartData.value.metaDiaria.values.every((v) => v === 0);
+  });
+
+  const isDescontosEmpty = computed(() => {
+    return chartData.value.descontos.values.length === 0 ||
+      chartData.value.descontos.values.every((v) => v === 0);
+  });
+
+  const isProdutosBarEmpty = computed(() => {
+    return chartData.value.produtosBar.names.length === 0 ||
+      (chartData.value.produtosBar.current.every((v) => v === 0) &&
+        chartData.value.produtosBar.previous.every((v) => v === 0));
+  });
+
   // ==================== ACTIONS ====================
   function setDashboardData(data: DashboardApiResponse | null) {
     rawData.value = data;
@@ -158,5 +197,12 @@ export const useDashboardStore = defineStore("dashboard", () => {
     aniversariantesItems,
     atendentesItems,
     atendimentosVencidos,
+
+    // Empty state flags
+    isOcorrenciasPieEmpty,
+    isOcorrenciasLineEmpty,
+    isMetaDiariaEmpty,
+    isDescontosEmpty,
+    isProdutosBarEmpty,
   };
 });

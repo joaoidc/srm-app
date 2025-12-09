@@ -253,7 +253,6 @@ const { search, filteredItems: fornecedoresFiltrados } = useListFilter(
 );
 
 // --- Modal Integration ---
-// --- Modal Integration ---
 import ModalDetalhesParceiro from "../../painel/components/ModalDetalhesParceiro.vue";
 
 const showModal = ref(false);

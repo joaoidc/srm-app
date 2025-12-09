@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import type { User, LoginCredentials } from "@/types/auth";
+import type { User, LoginCredentials, Permissao, Parametros } from "@/types/auth";
 
 const STORAGE_KEY = "srm_auth_user";
 
@@ -15,6 +15,8 @@ export const useAuthStore = defineStore("auth", () => {
   const userEmail = computed(() => user.value?.email ?? "");
   const userName = computed(() => user.value?.usuario ?? "");
   const userRole = computed(() => user.value?.role ?? "user");
+  const userPermissoes = computed<Permissao[]>(() => (user.value?.permissoes as Permissao[]) ?? []);
+  const userParametros = computed<Partial<Parametros>>(() => (user.value?.parametros as Partial<Parametros>) ?? {});
 
   // Salvar usuário no localStorage
   function saveUserToStorage(userData: User) {
@@ -167,6 +169,8 @@ export const useAuthStore = defineStore("auth", () => {
     userEmail,
     userName,
     userRole,
+    userPermissoes,
+    userParametros,
 
     // Métodos
     initAuth,
