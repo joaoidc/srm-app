@@ -35,6 +35,23 @@ export type FornecedorMapItem = Pick<
   | "fanta"
 >;
 
-export interface FornecedorResponse extends ApiResponse<Fornecedor[]> {
-  data: Fornecedor[];
+export interface FornecedorResponse {
+  status: number;
+  message: string;
+  success: boolean;
+  data: {
+    page: number;
+    size: number;
+    totalItems: number;
+    totalPages: number;
+    items: Fornecedor[];
+  };
+}
+
+export interface FornecedorFilters {
+  search?: string;
+  fantasia?: string;
+  cidade?: string;
+  status?: string;
+  sortBy?: string;
 }

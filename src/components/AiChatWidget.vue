@@ -208,6 +208,9 @@ const messagesEndRef = ref<HTMLElement | null>(null);
 const hasUnreadMessages = ref(false);
 const lastReadMessageIndex = ref(0);
 const hasInitialized = ref(false);
+const sessionId = ref<string | null>(null);
+
+const API_URL = "http://212.28.177.114:3028/api/knowledge/chat";
 
 const messages = ref<Array<{ text: string; isUser: boolean; time: string }>>(
   []
@@ -251,8 +254,10 @@ const toggleChat = async () => {
 const sendMessage = async () => {
   if (!newMessage.value.trim()) return;
 
+  const userText = newMessage.value;
+
   messages.value.push({
-    text: newMessage.value,
+    text: userText,
     isUser: true,
     time: new Date().toLocaleTimeString([], {
       hour: "2-digit",
@@ -260,31 +265,69 @@ const sendMessage = async () => {
     }),
   });
 
-  const userText = newMessage.value;
   newMessage.value = "";
   await scrollToBottom();
 
   isTyping.value = true;
   await scrollToBottom();
 
-  setTimeout(async () => {
+  try {
+    const response = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        message: userText,
+        sessionId: sessionId.value,
+        humanize: false,
+      }),
+    });
+
+    const result = await response.json();
+
+    isTyping.value = false;
+
+    if (result.success && result.data) {
+      sessionId.value = result.data.sessionId;
+
+      messages.value.push({
+        text: result.data.answer,
+        isUser: false,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    } else {
+      messages.value.push({
+        text: "Desculpe, não consegui processar sua mensagem. Tente novamente.",
+        isUser: false,
+        time: new Date().toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+        }),
+      });
+    }
+  } catch (error) {
     isTyping.value = false;
     messages.value.push({
-      text: "Esta é uma resposta automática de demonstração. Em breve estarei integrado com a IA real!",
+      text: "Erro ao conectar com o servidor. Verifique sua conexão.",
       isUser: false,
       time: new Date().toLocaleTimeString([], {
         hour: "2-digit",
         minute: "2-digit",
       }),
     });
-    await scrollToBottom();
+  }
 
-    if (!isOpen.value) {
-      hasUnreadMessages.value = true;
-    } else {
-      lastReadMessageIndex.value = messages.value.length;
-    }
-  }, 1500);
+  await scrollToBottom();
+
+  if (!isOpen.value) {
+    hasUnreadMessages.value = true;
+  } else {
+    lastReadMessageIndex.value = messages.value.length;
+  }
 };
 
 watch(isOpen, (val) => {

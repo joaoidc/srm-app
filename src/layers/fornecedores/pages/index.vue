@@ -115,7 +115,7 @@
             class="mb-4 font-semibold text-sm"
             style="color: var(--color-primary)"
           >
-            {{ fornecedoresFiltrados.length }} resultados
+            {{ fornecedores?.data.totalItems }} resultados
           </div>
           <ListaFornecedores
             :fornecedores="paginatedFornecedores"
@@ -123,14 +123,15 @@
           />
 
           <UiPaginacao
-            v-model:current-page="currentPage"
-            :total-pages="totalPages"
+            v-model:page="currentPage"
+            :total-items="fornecedores?.data.totalItems"
+            :total-pages="fornecedores?.data.totalPages"
             class="mt-6"
           />
         </div>
 
         <div v-else>
-          <MapaFornecedores :fornecedores="fornecedoresFiltrados" />
+          <MapaFornecedores :fornecedores="fornecedores?.data.items" />
         </div>
       </div>
     </div>
@@ -140,25 +141,22 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, watch } from "vue";
 import { Search, Filter, List, Map } from "lucide-vue-next";
 import ListaFornecedores from "../components/ListaFornecedores.vue";
 import MapaFornecedores from "../components/MapaFornecedores.vue";
 import FiltrosFornecedores from "../components/FiltrosFornecedores.vue";
 import UiSpinner from "../../../components/ui/feedback/UiSpinner.vue";
 import UiPaginacao from "@/components/ui/navigation/UiPaginacao.vue";
+import ModalDetalhesParceiro from "../../painel/components/ModalDetalhesParceiro.vue";
 import type { Fornecedor } from "../types/fornecedores";
 import { useFornecedorService } from "../composables/useFornecedorService";
-import { useListFilter } from "../../../composables/ui/useListFilter";
 
-const { fetchFornecedor } = useFornecedorService();
-const { data: fornecedores, status } = fetchFornecedor();
-
-const isLoading = computed(() => status.value === "pending");
 const showFilters = ref(false);
 const viewMode = ref<"list" | "map">("list");
 const currentPage = ref(1);
-const itemsPerPage = 10;
+const itemsPerPage = ref(50);
+const search = ref("");
 
 const filters = ref({
   fantasia: "",
@@ -169,6 +167,7 @@ const filters = ref({
 
 const activeFiltersCount = computed(() => {
   let count = 0;
+  if (search.value) count++;
   if (filters.value.fantasia) count++;
   if (filters.value.cidade) count++;
   if (filters.value.status !== "todos") count++;
@@ -176,82 +175,40 @@ const activeFiltersCount = computed(() => {
   return count;
 });
 
-const listaFornecedores = computed(() => fornecedores.value?.data ?? []);
+const { fetchFornecedor } = useFornecedorService();
 
-const mapStatusFilter = (filter: string): Fornecedor["status"] | null => {
-  const map: Record<string, Fornecedor["status"]> = {
-    ativo: "ativo",
-    inativo: "inativo",
-    alerta: "alerta",
-  };
-  return map[filter.trim().toLowerCase()] || null;
-};
-
-const filterConfig = computed(() => ({
-  searchFields: ["fornecedor", "fanta", "cidade"] as (keyof Fornecedor)[],
-
-  customFilters: (s: Fornecedor) => {
-    const f = filters.value;
-
-    const matchFantasia =
-      !f.fantasia ||
-      (s.fanta ?? "").toLowerCase().includes(f.fantasia.toLowerCase());
-
-    const matchCidade =
-      !f.cidade || s.cidade.toLowerCase().includes(f.cidade.toLowerCase());
-
-    const statusTarget = mapStatusFilter(f.status);
-    const itemStatus = (s.status || "").trim().toLowerCase();
-    const matchStatus = f.status === "todos" || itemStatus === statusTarget;
-
-    return matchFantasia && matchCidade && matchStatus;
-  },
-
-  sortCompare: (a: Fornecedor, b: Fornecedor) => {
-    const sortBy = filters.value.sortBy;
-    if (sortBy === "cidade") {
-      return a.cidade.localeCompare(b.cidade);
-    }
-    if (sortBy === "status") {
-      const normalizar = (status: string) => status.trim().toLowerCase();
-      const order: Record<string, number> = {
-        ativo: 1,
-        alerta: 2,
-        inativo: 3,
-      };
-      return (
-        (order[normalizar(a.status)] ?? 99) -
-        (order[normalizar(b.status)] ?? 99)
-      );
-    }
-    return a.fornecedor.localeCompare(b.fornecedor);
-  },
+const fornecedorFilters = computed(() => ({
+  search: search.value,
+  fantasia: filters.value.fantasia,
+  cidade: filters.value.cidade,
+  status: filters.value.status,
+  sortBy: filters.value.sortBy,
 }));
 
-const { search, filteredItems: fornecedoresFiltrados } = useListFilter(
-  listaFornecedores,
-  filterConfig
-);
+watch([search, filters], () => {
+  currentPage.value = 1;
+}, { deep: true });
 
-const totalPages = computed(() => Math.ceil(fornecedoresFiltrados.value.length / itemsPerPage) || 1);
-
-const paginatedFornecedores = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage;
-  const end = start + itemsPerPage;
-  return fornecedoresFiltrados.value.slice(start, end);
+watch(currentPage, () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 
-// --- Modal Integration ---
-import ModalDetalhesParceiro from "../../painel/components/ModalDetalhesParceiro.vue";
+const {
+  data: fornecedores,
+  status,
+} = fetchFornecedor(currentPage, itemsPerPage, fornecedorFilters);
+
+const isLoading = computed(() => status.value === "pending");
+
+const paginatedFornecedores = computed(() => fornecedores.value?.data.items ?? []);
 
 const showModal = ref(false);
 const selectedFornecedor = ref<any>(null);
 
 const handleSelectFornecedor = (fornecedor: Fornecedor) => {
-  // Map Fornecedor to the shape expected by the modal
   selectedFornecedor.value = {
     ...fornecedor,
-    name: fornecedor.fornecedor, // Modal expects 'name'
+    name: fornecedor.fornecedor,
   };
   showModal.value = true;
 };

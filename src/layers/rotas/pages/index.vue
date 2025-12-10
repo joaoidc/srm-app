@@ -46,6 +46,7 @@
           class="absolute left-0 top-1/2 -translate-y-1/2 w-0.5 h-0 bg-[var(--color-primary)] rounded-r-full opacity-0 group-hover/item:h-6 group-hover/item:opacity-100 transition-all duration-300"
         ></div>
 
+        <div class="flex flex-col md:flex-row md:items-center gap-2.5 md:gap-4 items-center"></div>
         <div class="flex md:grid md:grid-cols-12 gap-2.5 md:gap-4 items-center">
           <div class="col-span-6 flex items-center gap-2.5 md:gap-3 flex-1 min-w-0">
             <div
@@ -60,8 +61,11 @@
                 {{ route.name }}
               </span>
               <span class="text-[11px] text-[var(--color-text-muted)] truncate">
-                {{ route.dateRange }} · {{ route.suppliersCount }} fornecedor{{ route.suppliersCount !== 1 ? "es" : "" }}
+                {{ route.dateRange }}
               </span>
+              <span class="sm:inline hidden text-[11px] text-[var(--color-text-muted)] truncate">
+                 {{ route.suppliersCount }} fornecedor{{ route.suppliersCount !== 1 ? "es" : "" }}
+                </span>
             </div>
           </div>
 
@@ -79,10 +83,6 @@
             <UiButton variant="primary" size="small" class="hidden md:flex">
               <Plus class="w-3 h-3" />
               Adição rápida
-            </UiButton>
-
-            <UiButton variant="ghost" size="small" class="!px-1.5 !py-1.5 md:!px-2 md:hidden">
-              <Plus class="w-4 h-4" />
             </UiButton>
 
             <UiButton variant="ghost" size="small" class="!px-1.5 !py-1.5 md:!px-2">
